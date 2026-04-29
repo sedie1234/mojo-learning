@@ -1,0 +1,69 @@
+═══════ 01_lifecycle.mojo ═══════
+=== 1. Python 인터프리터 lifecycle ===
+cold (math, 첫 호출):            17132828 ns
+warm (math, 2회):               640 ns
+warm (math, 3회):               360 ns
+warm (math, 4회):               310 ns
+new (sys, 첫 호출):             410 ns
+new (os, 첫 호출):              370 ns
+warm (sys, 2회):                330 ns
+cold-ish (numpy, 첫 호출):      38864418 ns
+warm (numpy, 2회):              1790 ns
+
+ratio cold/warm (math):         25158
+ratio numpy_cold/numpy_warm:    21699
+
+═══════ 02_numpy_cost.mojo ═══════
+=== 2. NumPy np.array() 변환 비용 vs 크기 ===
+
+size       | median ns       | ns/elem
+-----------|-----------------|--------
+10        810        81
+100        2640        26
+1000        22090        22
+10000        215138        21
+100000        1625260        16
+
+═══════ 03_type_conv.mojo ═══════
+=== 3. PyObject ↔ Mojo native 타입 변환 ===
+
+[Int]
+  Mojo Int → Python int:      42  type: <class 'int'>
+  Python int → Mojo Int:      99
+
+[Float64]
+  Mojo Float64 → Python float: 3.14
+  Python float → Mojo Float64: 2.71
+
+[String]
+  Mojo String → Python str:    hello mojo  len: 10
+  Python str → Mojo String:    from python
+
+[List]
+  Python list 직접 사용:       [1, 2, 3, 4, 5]  len: 5
+  pylist.append(99) 후:        [1, 2, 3, 4, 5, 99]
+  Mojo List[Int] → Python list: [10, 20, 30]
+
+[자동 변환 (Mojo native → Python 함수 인자)]
+  math.sqrt(Mojo Int 16):      4.0
+  math.pow(2, 10):             1024.0
+  math.cos(Mojo Float64 0.0):  1.0
+
+═══════ 04_exception.mojo ═══════
+=== 4. Python 예외 ↔ Mojo error ===
+
+[ZeroDivisionError]
+  caught: division by zero
+
+[정상 케이스 (대조)]
+  10/2 = 5.0
+
+[KeyError]
+  caught: 'nonexistent_key'
+
+[ValueError]
+  caught: invalid literal for int() with base 10: 'not_a_number'
+
+[AttributeError]
+  caught: module 'math' has no attribute 'nonexistent_function'
+

@@ -1,0 +1,742 @@
+=== STEP 1: mojo CLI 자체 ===
+
+$ which mojo
+
+$ ls -la /home/hwan/workspace/mojo/.venv/bin/mojo
+-rwxrwxr-x 1 hwan hwan 201 Apr 28 11:48 /home/hwan/workspace/mojo/.venv/bin/mojo
+
+$ file /home/hwan/workspace/mojo/.venv/bin/mojo
+/home/hwan/workspace/mojo/.venv/bin/mojo: Python script, ASCII text executable
+
+$ cat /home/hwan/workspace/mojo/.venv/bin/mojo
+#!/home/hwan/workspace/mojo/.venv/bin/python3
+import sys
+from mojo._entrypoints import exec_mojo
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(exec_mojo())
+
+=== STEP 2: modular 패키지 톱레벨 ===
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/
+bin
+lib
+
+$ du -sh /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/* 2>/dev/null | sort -hr
+835M	/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib
+293M	/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin
+
+=== STEP 3: bin/ — 실제 컴파일러 바이너리들 ===
+
+$ ls -la /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/
+total 299132
+drwxrwxr-x 2 hwan hwan      4096 Apr 28 11:48 .
+drwxrwxr-x 4 hwan hwan      4096 Apr 28 11:48 ..
+-rwxrwxr-x 1 hwan hwan    292112 Apr 28 11:48 gpu-query
+-rwxrwxr-x 1 hwan hwan 110151352 Apr 28 11:48 lld
+-rwxrwxr-x 1 hwan hwan     59600 Apr 28 11:48 lldb-argdumper
+-rwxrwxr-x 1 hwan hwan   1706776 Apr 28 11:48 lldb-dap
+-rwxrwxr-x 1 hwan hwan  18183816 Apr 28 11:48 lldb-server
+-rwxrwxr-x 1 hwan hwan   5978584 Apr 28 11:48 llvm-symbolizer
+-rwxrwxr-x 1 hwan hwan    593784 Apr 28 11:48 modular-crashpad-handler
+-rwxrwxr-x 1 hwan hwan 135442416 Apr 28 11:48 mojo
+-rwxrwxr-x 1 hwan hwan    378424 Apr 28 11:48 mojo-lldb
+-rwxrwxr-x 1 hwan hwan  33499392 Apr 28 11:48 mojo-lsp-server
+
+$ file /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/* 2>&1 | head -20
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/gpu-query:                ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=ab56d987715f8de0f7aacf5f0bd60d2a, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/lld:                      ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=0887d8794c82ac2034e9b7803118df38, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/lldb-argdumper:           ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=f67c55b5d5d3258752bf18b87faa8f52, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/lldb-dap:                 ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=f8993f23bc5e1309975bdcd833c0c43f, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/lldb-server:              ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=f4e4d5af57f1479aeb90a7a7e62068e7, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/llvm-symbolizer:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=e4ad18e03f1e45056d627ecb4a5be709, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/modular-crashpad-handler: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=4cd4fb6e2b1c199a81549e6acb7cd6ad, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/mojo:                     ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=30c8c15b29c5dd97032c6b0bc44412ea, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/mojo-lldb:                ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=67aad950557ad312c94939268ab7c73c, stripped
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/mojo-lsp-server:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[md5/uuid]=d46fb2b170fd1a4dad2b1a646dd67404, stripped
+
+=== STEP 4: lib/ — 런타임 shared libs ===
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/ | head -30
+libAsyncRTMojoBindings.so
+libAsyncRTRuntimeGlobals.so
+libKGENCompilerRTShared.so
+liblldb23.0.0git.so
+libmax.so
+libMGPRT.so
+libMojoJupyter.so
+libMojoLLDB.so
+libMSupportGlobals.so
+libNVPTX.so
+libnvshmem_host.so.3
+lldb-visualizers
+mojo
+mojo-repl-entry-point
+nixl
+nvshmem_bootstrap_mpi.so.3
+nvshmem_transport_ibgda.so.3
+nvshmem_transport_ibrc.so.3
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/*.so 2>/dev/null | wc -l
+10
+
+=== STEP 5: lib/mojo — 여기에 stdlib? ===
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/ | head -30
+buffer.mojopkg
+comm.mojopkg
+compiler_internal.mojopkg
+compiler.mojopkg
+_cublas.mojopkg
+_cudnn.mojopkg
+_cufft.mojopkg
+_curand.mojopkg
+internal_utils.mojopkg
+kv_cache.mojopkg
+layout.mojopkg
+linalg.mojopkg
+_miopen.mojopkg
+MOGGKernelAPI.mojopkg
+MOGGPrimitives.mojopkg
+nn.mojopkg
+nvml.mojopkg
+quantization.mojopkg
+register.mojopkg
+_rocblas.mojopkg
+shmem.mojopkg
+std.mojopkg
+structured_kernels.mojopkg
+tensor.mojopkg
+weights_registry.mojopkg
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/ | wc -l
+25
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/*.mojopkg 2>/dev/null
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/buffer.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/comm.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/compiler_internal.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/compiler.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cublas.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cudnn.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cufft.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_curand.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/internal_utils.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/kv_cache.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/layout.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/linalg.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_miopen.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/MOGGKernelAPI.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/MOGGPrimitives.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/nn.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/nvml.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/quantization.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/register.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_rocblas.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/shmem.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/std.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/structured_kernels.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/tensor.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/weights_registry.mojopkg
+
+=== STEP 6: .mojopkg vs .mojo 소스 분포 ===
+
+$ find /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular -name '*.mojopkg' 2>/dev/null
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/kv_cache.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cudnn.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cublas.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/buffer.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/shmem.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/structured_kernels.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/nvml.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_curand.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/comm.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/quantization.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/tensor.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/MOGGPrimitives.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/register.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_miopen.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_cufft.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/_rocblas.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/nn.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/weights_registry.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/layout.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/std.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/compiler_internal.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/internal_utils.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/linalg.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/MOGGKernelAPI.mojopkg
+/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/compiler.mojopkg
+
+$ find /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular -name '*.mojo' 2>/dev/null | head -10
+
+$ find /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular -name '*.mojo' 2>/dev/null | wc -l
+0
+
+=== STEP 7: mojo Python 패키지 (CLI 진입점) ===
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/
+_entrypoints.py
+importer.py
+notebook.py
+_package_root.py
+paths.py
+__pycache__
+run.py
+
+$ cat /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/_entrypoints.py 2>/dev/null | head -40
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+"""Contains entrypoints for the Mojo wheel"""
+
+import os
+import sys
+
+from ._package_root import get_package_root
+from .run import _mojo_env
+
+
+def _entrypoint(file: str) -> None:
+    root = get_package_root()
+    assert root
+    env = _mojo_env()
+
+    os.execve(root / "bin" / file, sys.argv, env)
+
+
+def exec_mojo() -> None:
+    env = _mojo_env()
+
+    os.execve(env["MODULAR_MOJO_MAX_DRIVER_PATH"], sys.argv, env)
+
+
+def exec_lld() -> None:
+    _entrypoint("lld")
+
+
+
+=== STEP 8: mojo CLI에 path/import 관련 옵션 ===
+
+$ mojo --help 2>&1 | grep -iE 'path|import|package|module' | head -20
+        mojo [run-options] <path>
+        as commands to run, compile, and package Mojo code. A list of all
+        adding the `--help` option to the command (for example, `mojo package
+        package  — Compiles a Mojo package.
+
+$ mojo build --help 2>&1 | grep -iE 'path|import|package|include' | head -20
+        mojo build [options] <path>
+        Compiles the Mojo file at the given path into an executable.
+        included in the executable binary, so they must be provided by the
+        -o <PATH>
+            Sets the path and filename for the executable output. By default, it
+        -I <PATH>
+            Appends the given path to the list of directories to search for
+            imported Mojo files.
+        --elaboration-error-include-prelude
+            Do not use builtins when create package.
+        --ignore-incompatible-package-errors
+            Ignore errors encountered when loading incompatible Mojo packages.
+
+$ mojo package --help 2>&1 | head -30
+NAME
+        mojo-package — Compiles a Mojo package.
+
+SYNOPSIS
+        mojo package [options] <path>
+
+DESCRIPTION
+        Compiles a directory of Mojo source files into a binary package suitable
+        to share and import into other Mojo programs and modules. A Mojo package
+        is portable across different systems because it includes only
+        non-elaborated code (it's not an arch-specific package). The code becomes
+        an arch-specific executable only after it's imported into a Mojo program
+        that's then compiled with `mojo build`.
+        
+        To create a Mojo package, first add an `__init__.mojo` file to your
+        package directory. Then pass that directory name to this command, and
+        specify the output path and filename with `-o`.
+        
+        For more information, see [Mojo modules and
+        packages](https://docs.modular.com/mojo/manual/packages).
+
+OPTIONS
+    Output options
+        -o <PATH>
+            Sets the path and filename for the output package. The filename must
+            end with `.mojopkg`. The filename given here defines the package name
+            you can then use to import the code (minus the file extension). If
+            you don't specify this option, a `.mojopkg` file is generated in the
+            current working directory, with a name based on the name of the input
+            directory.
+
+=== STEP 9: 경로 탐지 — paths.py / _package_root.py / run.py ===
+
+$ cat /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/_package_root.py
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from __future__ import annotations
+
+import logging
+import os
+from pathlib import Path
+
+
+def get_package_root() -> Path | None:
+    """Returns the package root of this installation, or None if running in a Bazel environment"""
+    # lib/python3.12/site-packages/mojo/_package_root.py
+    # ->
+    # lib/python3.12/site-packages
+    site_packages_root = Path(__file__).parent.parent
+
+    # Look for bin/mojo in the environment
+    # This is currently supposed to work for two cases:
+    # - Set of Conda packages.
+    # lib/python3.12/site-packages
+    # ->
+    # bin/mojo
+    conda_root = site_packages_root.parent.parent.parent
+    # - Monolithic Pip wheel installation.
+    # lib/python3.12/site-packages
+    # ->
+    # lib/python3.12/site-packages/modular/bin/mojo
+    wheel_root = site_packages_root / "modular"
+
+    # Make sure we check the wheel root first!
+    # conda_root / bin / mojo should exist in both cases here, but when using
+    # wheels this is just a generated wrapper script, which we shouldn't call
+    # from here since we'd end up in an infinite loop.
+    for root in (wheel_root, conda_root):
+        if (root / "bin/mojo").exists():
+            logging.debug(f"Located Modular SDK assets at {root}")
+            return root
+
+    # If we're in a development venv we don't have the full wheel layout, but
+    # this might work depending on what files are being looked up and what the
+    # venv contains.
+    if venv_root := os.environ.get("VIRTUAL_ENV"):
+        return Path(venv_root)
+    elif (
+        "MODULAR_DERIVED_PATH" in os.environ
+        or "BUILD_WORKSPACE_DIRECTORY" in os.environ
+        or "BAZEL_TEST" in os.environ
+    ):
+        # We're running in a Modular internal Bazel test, so let Bazel handle
+        # the environment variables.
+        return None
+    else:
+        raise RuntimeError(
+            "Unable to locate Modular SDK library assets root directory."
+        )
+
+$ cat /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/paths.py
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from __future__ import annotations
+
+import hashlib
+import logging
+import os
+import shlex
+import subprocess
+import tempfile
+from dataclasses import dataclass
+from pathlib import Path
+
+from .run import subprocess_run_mojo
+
+
+class Error(Exception):
+    """Base error for mojo paths."""
+
+
+@dataclass
+class MojoCompilationError(Error):
+    """Error encountered compiling a Mojo source package."""
+
+    path: Path
+    command: list[str]
+    stdout: str
+    stderr: str
+
+    @staticmethod
+    def from_subprocess_error(
+        path: Path,
+        args: list[str],
+        err: subprocess.CalledProcessError,
+    ) -> MojoCompilationError:
+        return MojoCompilationError(
+            path, args, err.stdout.decode(), err.stderr.decode()
+        )
+
+    def __str__(self) -> str:
+        command = shlex.join(self.command)
+        return f"Error compiling Mojo at {self.path}. Command: {command}\n\n{self.stderr}"
+
+
+@dataclass
+class MojoModulePath:
+    """Represents a path to the root file of a Mojo module on the file system."""
+
+    path: Path
+    """Mojo source file that is the root of the module. Either an `__init__` file
+    or a single-file module. """
+
+    is_package: bool
+
+
+def is_mojo_source_package_path(path: Path) -> bool:
+    """Returns True if the given path is a Mojo package source directory.
+
+    A Mojo package source directory is a directory that contains an
+    `__init__.mojo` file.
+
+    Args:
+        path: The path to check
+
+    Returns:
+        bool: True if the path is a Mojo source package directory
+    """
+    return _mojo_source_package_root_file(path) is not None
+
+
+def find_mojo_module_in_dir(
+    dir_path: Path, module_name: str
+) -> MojoModulePath | None:
+    """Searches a directory for Mojo package or single file module.
+
+    Returns:
+        A `MojoModulePath` if found, otherwise None.
+    """
+    # Check for package first: <dir_path>/<module_name>/__init__.mojo
+    if init_file_path := _mojo_source_package_root_file(dir_path / module_name):
+        return MojoModulePath(init_file_path, True)
+
+    # If not a package, check for single file: <dir_path>/<module_name>.mojo
+    for ext in ["mojo"]:
+        potential_file = dir_path / f"{module_name}.{ext}"
+        if potential_file.is_file():
+            # Found single file.
+            return MojoModulePath(potential_file, False)
+
+    # Not found in this directory
+    return None
+
+
+def _mojo_source_package_root_file(path: Path) -> Path | None:
+    """Returns the path to the `__init__.mojo` package root
+    file if this is a Mojo source package directory, otherwise None.
+
+    A Mojo package source directory is a directory that contains an
+    `__init__.mojo` file.
+
+    Args:
+        path: The path to check
+
+    Returns:
+        Path: Path to the root module file if the path is a Mojo source package
+          directory
+    """
+    if not path.is_dir():
+        return None
+
+    init_mojo = path / "__init__.mojo"
+
+    if init_mojo.is_file():
+        return init_mojo
+    else:
+        return None
+
+
+def is_mojo_binary_package_path(path: Path) -> bool:
+    """Returns True if the given path is a Mojo binary package file, i.e.
+    a file ending in ".mojopkg".
+    """
+
+    if not path.is_file():
+        return False
+
+    return path.suffix == ".mojopkg"
+
+
+def _build_mojo_source_package(path: Path) -> Path:
+    assert is_mojo_source_package_path(path)
+
+    # Create a deterministic path in the temp directory based on the source path.
+    # Include the user ID in the path to avoid permission conflicts
+    # when multiple OS users share the same temp directory (Linux).
+    path_hash = hashlib.md5(str(path.absolute()).encode()).hexdigest()
+    tmp_path = (
+        Path(tempfile.gettempdir())
+        / f".modular_{os.getuid()}"
+        / "mojo_pkg"
+        / f"mojo_pkg_{path_hash}.mojopkg"
+    )
+
+    # Ensure parent directories exist
+    tmp_path.parent.mkdir(parents=True, exist_ok=True)
+
+    args = [
+        # `mojo` command argument is impliict.
+        "package",
+        str(path),
+        "-o",
+        str(tmp_path),
+    ]
+
+    try:
+        package_result = subprocess_run_mojo(
+            args, capture_output=True, check=True
+        )
+    except subprocess.CalledProcessError as e:
+        error = MojoCompilationError.from_subprocess_error(path, args, e)
+        logging.error(str(error))
+        raise error from e
+
+    return tmp_path
+
+$ cat /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/run.py
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+import os
+import shutil
+import subprocess
+from typing import Any
+
+from ._package_root import get_package_root
+
+
+def _sdk_default_env() -> dict[str, str]:
+    root = get_package_root()
+
+    # Running in Bazel
+    if not root:
+        return {}
+
+    bin = root / "bin"
+    lib = root / "lib"
+
+    # Special case for wheel entrypoint - in
+    # the venv it is actually put in the root `bin`.
+    # lib/python3.13/site-packages/max/
+    # ->
+    # bin/mblack
+    extra_env = {}
+    maybe_mblack_path = root.parent.parent.parent.parent / "bin/mblack"
+    if maybe_mblack_path.exists():
+        extra_env["MODULAR_MOJO_MAX_MBLACK_PATH"] = str(maybe_mblack_path)
+
+    return {
+        "MODULAR_MAX_PACKAGE_ROOT": str(root),
+        "MODULAR_MOJO_MAX_PACKAGE_ROOT": str(root),
+        "MODULAR_MOJO_MAX_DRIVER_PATH": str(bin / "mojo"),
+        "MODULAR_MOJO_MAX_IMPORT_PATH": str(lib / "mojo"),
+    } | extra_env
+
+
+def _mojo_env() -> dict[str, str]:
+    """Returns an environment variable set that uses the Mojo SDK environment
+    paths by default, but with overrides from the ambient OS environment."""
+
+    return _sdk_default_env() | dict(os.environ)
+
+
+def subprocess_run_mojo(  # noqa: ANN201
+    mojo_args: list[str],
+    **kwargs: Any,
+):
+    """Launches the bundled `mojo` in a subprocess, configured to use the
+    `mojo` assets in the `max` package.
+
+    Arguments:
+        mojo_args: Arguments supplied to the `mojo` command.
+        kwargs: Additional arguments to pass to `subprocess.run()`
+    """
+
+    env = _mojo_env()
+    mojo = env.get("MODULAR_MOJO_MAX_DRIVER_PATH") or shutil.which("mojo")
+    if not mojo or not os.path.exists(mojo):
+        raise RuntimeError("error: Could not find `mojo` executable")
+
+    return subprocess.run(
+        # Combine the `mojo` executable path with the provided argument list.
+        [mojo] + mojo_args,
+        env=env,
+        **kwargs,
+    )
+
+=== STEP 10: Python ↔ Mojo bridge — importer.py ===
+
+$ wc -l /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/importer.py
+184 /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/importer.py
+
+$ head -60 /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/importer.py
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+import hashlib
+import logging
+import os
+import subprocess
+import sys
+from collections.abc import Sequence
+from importlib.util import spec_from_file_location
+from pathlib import Path
+
+from .paths import MojoCompilationError, MojoModulePath, find_mojo_module_in_dir
+from .run import subprocess_run_mojo
+
+# ---------------------------------------
+# Helper Functions
+# ---------------------------------------
+
+
+def _calculate_mojo_source_hash(mojo_dir: Path) -> str:
+    """Calculates a truncated SHA256 hash of all .mojo files in a directory."""
+    # Find all .mojo files recursively
+    source_files = sorted(mojo_dir.rglob("*.mojo"))
+
+    if not source_files:
+        # This should be unreachable if the caller validates that mojo_dir
+        # contains Mojo source files before calling this function.
+        raise ImportError(
+            f"Internal Error: No .mojo files found in directory '{mojo_dir}' for hashing."
+        )
+
+    hasher = hashlib.sha256()
+    for file_path in source_files:
+        try:
+            # Add file path to hash to distinguish identical content in different files
+            hasher.update(str(file_path.relative_to(mojo_dir)).encode("utf-8"))
+            # Add file content to hash
+            with open(file_path, "rb") as f:
+                hasher.update(f.read())
+        except (ValueError, UnicodeError, OSError) as e:
+            raise ImportError(
+                f"Could not process Mojo source file '{file_path}' for hashing"
+            ) from e
+
+    # Return only the first 16 characters of the hex digest, since the full
+    # hash is quite long and this is just a best-effort heuristic to check for
+    # changes.
+    return hasher.hexdigest()[:16]
+
+
+=== STEP 11: 환경변수 — _mojo_env() 가 무엇을 세팅? ===
+
+$ grep -nE 'MODULAR|MOJO|PATH' /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/mojo/run.py | head -30
+40:        extra_env["MODULAR_MOJO_MAX_MBLACK_PATH"] = str(maybe_mblack_path)
+43:        "MODULAR_MAX_PACKAGE_ROOT": str(root),
+44:        "MODULAR_MOJO_MAX_PACKAGE_ROOT": str(root),
+45:        "MODULAR_MOJO_MAX_DRIVER_PATH": str(bin / "mojo"),
+46:        "MODULAR_MOJO_MAX_IMPORT_PATH": str(lib / "mojo"),
+70:    mojo = env.get("MODULAR_MOJO_MAX_DRIVER_PATH") or shutil.which("mojo")
+
+$ env | grep -E 'MODULAR|MOJO' | head -10
+
+$ mojo run -e 'print("x")' >/dev/null 2>&1; env | grep -E 'MODULAR|MOJO' | head -10
+
+=== STEP 12: prelude — 자동 import되는 빌트인 ===
+
+$ mojo build --help 2>&1 | grep -A3 -i prelude
+        --elaboration-error-include-prelude
+            Show elaboration error with locations in mojo startup modules
+            (prelude).
+
+    Target options
+        --target-triple <TRIPLE>
+
+$ ls /home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/mojo/ | grep -i prelude
+
+=== STEP 13: -I 옵션 동작 + __init__.mojo 규약 (mojo package --help 부분) ===
+
+$ mojo package --help 2>&1 | sed -n '25,60p'
+            Sets the path and filename for the output package. The filename must
+            end with `.mojopkg`. The filename given here defines the package name
+            you can then use to import the code (minus the file extension). If
+            you don't specify this option, a `.mojopkg` file is generated in the
+            current working directory, with a name based on the name of the input
+            directory.
+
+    Compilation options
+        -I <PATH>
+            Appends the given path to the list of directories to search for
+            imported Mojo files.
+
+        -kgenModule
+            Export as a KGEN module.
+
+    Compilation diagnostic options
+        Controls how the Mojo compiler outputs diagnostics related to compiling
+        and running Mojo source code.
+
+        --diagnose-missing-doc-strings
+            Emits diagnostics for missing or partial doc strings.
+
+        --max-notes-per-diagnostic <INTEGER>
+            When the Mojo compiler emits diagnostics, it sometimes also prints
+            notes with additional information. This option sets an upper
+            threshold on the number of notes that can be printed with a
+            diagnostic. If not specified, the default maximum is 10.
+
+        --disable-builtins
+            Do not use builtins when create package.
+
+        --disable-warnings
+            Do not print warning messages.
+
+        --experimental-fixit
+            Automatically apply fix-its to the code, and rerun the command again

@@ -1,0 +1,74 @@
+# Mojo 학습 TODO
+
+> 이 파일은 **mojo-orchestrator** agent가 관리한다. 사용자도 자유롭게 추가/편집 가능.
+> 새 아이디어는 **Backlog**에 쌓고, 다음에 할 것을 **Next**로 옮기고, 진행 중인 것을 **In Progress**로, 끝난 것은 **Done**으로 옮긴다.
+> 각 항목 끝 `(→ NNNN)` 표기는 해당 work의 로그 번호 — 완료 시 채운다.
+
+## In Progress
+
+(없음)
+
+## Next
+
+(없음 — Language Fundamentals 5건 모두 0007에서 처리됨)
+
+## Backlog
+
+### 언어 기본
+- [ ] **(NEW from 0003)** `mojo build --emit llvm|asm`으로 `fn main(){print("hi")}`의 IR과 어셈블리 dump. optimization level 0/1/2/3 비교. (issue 미등재 — orchestrator가 다음 cycle에 등재할 후보)
+- [ ] **(NEW from 0003)** `mojo build --emit shared-lib`로 만든 `.so`를 C++에서 `dlopen`/직접 링크해 호출. Mojo↔C++ 상호운용 첫 시도. (issue 미등재)
+- [ ] **(NEW from 0003)** venv에서 Mojo 컴파일러만(MAX/transformers 제외) 분리 설치 가능한지 검증. 2.0 GB → ?? (issue 미등재)
+- [ ] **(NEW from 0003)** `libNVPTX` 등 GPU 백엔드가 항상 동봉되는 이유와 회피 가능성 — GPU 없는 환경에서 stripped variant 존재? (issue 미등재)
+- [ ] **(NEW from 0005)** `.mojopkg` 내부 포맷 — magic "MPKG\\x01" 이후 무엇이 들어 있나, KGEN module인가 MLIR bytecode인가 (`--emit=llvm`과 cross-check)
+- [ ] **(NEW from 0005)** `import compiler` (compiler.mojopkg) 시도 — Mojo에 reflection/introspection API가 있는가
+- [ ] **(NEW from 0005)** 자작 패키지 lifecycle 실험 — `__init__.mojo` 디렉토리 → `mojo package` → 다른 파일에서 `-I`로 import
+- [ ] **(NEW from 0005)** Python에서 `mojo.importer` 등록 후 `.mojo` 디렉토리 직접 import + SHA 캐시(`/tmp/.modular_<uid>/mojo_pkg/`) 동작 관찰
+- [ ] **(NEW from 0007)** `sizeof`/`bitwidthof`/`alignof` 정식 노출 위치 — 0.26 외부 API 미노출, std.mojopkg dump로 확인
+- [ ] **(NEW from 0007)** `class` 키워드 등장 여부 (Python superset 비전과 연결) — 로드맵 확인
+- [ ] **(NEW from 0007)** Lifetime parameter 표면 — Rust 식 `'a` 어노테이션이 Mojo에 있는가? `ref` 키워드 함께
+- [ ] **(NEW from 0007)** `__moveinit__` 호출 시점 추적 — `^` transfer 시 print 삽입으로 검증
+- [ ] **(NEW from 0007)** Trait 시스템 깊이 (T-10 영역) — Copyable/ImplicitlyCopyable 분리에서 본 dispatch 모델
+- [x] `struct` vs Python `class` (→ 0007, T-6)
+- [x] 정수/부동소수 타입과 C++ stdint 비교 (→ 0007, T-7)
+- [x] `var` vs `let` — let은 0.26에서 폐기 확인 (→ 0007, T-8)
+- [x] 소유권/borrow checker — read/mut/var + ^ transfer (→ 0007, T-9)
+- [x] Trait/parametric polymorphism — C++ template/concept과 비교 (→ 0008, T-10)
+- [ ] **(NEW from 0008)** Mojo의 dynamic dispatch / trait object (`dyn Trait`이나 vtable 기반) 표면 검증
+- [ ] **(NEW from 0008)** trait의 default method 가능 여부
+- [ ] **(NEW from 0008)** Mojo native auto-vectorize 정도 — XOR 루프가 0.18 ns/elem로 SIMD 추정. `vectorize` 명시 vs 자동 적용 비교 → T-11과 자연스럽게 연결
+
+### 성능/SIMD
+- [ ] `SIMD[DType.float32, N]` 벡터 add — C++ intrinsics(AVX2)와 어셈블리 비교.
+- [ ] 단순 벡터 합 벤치: Python list / NumPy / C++ / Mojo 4종 비교.
+- [ ] Naive matmul 4종 비교 + Mojo의 `vectorize`/`parallelize` 적용 효과.
+- [ ] 캐시 친화적 matmul (블로킹) — Mojo에서 직접.
+
+### Python 상호운용
+- [x] Mojo에서 NumPy 호출 — 객체 변환 비용 측정. (→ 0006, T-15)
+- [x] Python 모듈을 import해서 쓰는 vs Mojo native 구현의 비용 차. (→ 0008, T-16, Python pure 100× / NumPy ~1×)
+- [ ] **(NEW from 0006)** 예외 타입별 discriminate — Mojo에서 `except KeyError as e: ... except ValueError as e:` 식의 타입별 분기 가능한가
+- [ ] **(NEW from 0006)** GIL 거동 — Mojo 멀티스레드에서 Python 호출 + `parallelize`와의 호환성
+- [ ] **(NEW from 0006)** NumPy ndarray ↔ Mojo Tensor zero-copy 가능성 — buffer protocol 활용
+- [ ] **(NEW from 0006)** `Python.evaluate("...")` 동적 코드 실행 표면 매핑 — 표현식 / 문장 / 함수 정의까지 가능한지
+
+### MAX / AI
+- [ ] MAX 엔진 설치 및 ONNX/PyTorch 모델 로드.
+- [ ] 작은 모델(예: distilbert) 추론 — PyTorch vs MAX 처리량 비교.
+- [ ] `~/models/`의 기존 모델을 MAX에서 사용 가능한지 검토.
+
+## Done
+
+- 워크스페이스 셋업 (agents, skill, 디렉토리 구조) (→ 0001)
+- Mojo 설치 (venv + `pip install modular`, 2.0 GB) + hello world AOT 검증 (→ 0003)
+- Mojo 패키지/모듈 구조 추적 (실행 없이 fs 탐사) — Python wrapper→ELF 흐름, 25개 `.mojopkg` stdlib, prelude 컴파일러 내장, `__init__.mojo`, `importer.py` (→ 0005)
+- Python interop 표면 + 비용 측정 — lifecycle(cold 17~39 ms / warm sub-μs), NumPy 변환 16~22 ns/elem, 타입변환 비대칭(Mojo→Py 자동, Py→Mojo `py=` 키워드 only), 예외 통합. (→ 0006)
+- Language Fundamentals 5건 — fn/def(0.26부터 둘 다 raises 명시 필수), struct(value, .copy() 명시 필요), numeric types(C++ stdint 매핑, wrap overflow), var only(let 폐기), ownership(read/mut/var + `^`, Rust 모델 단순화). (→ 0007)
+- Trait/parametric polymorphism + Python interop vs Mojo native cost — trait API(0.26: T: A & B, trait inheritance), Python pure ↔ Mojo native 100× 차, NumPy ↔ Mojo native 1~9×. (→ 0008)
+
+---
+
+## TODO 작성 가이드
+
+- **항목은 work으로 변환 가능한 단위**. 너무 크면 하위로 쪼갠다 ("Mojo 마스터" ❌, "`SIMD` 타입의 `__add__` 동작 확인" ✅).
+- **결과를 보고 떠오른 아이디어는 즉시 Backlog에**. 잊지 않게.
+- **우선순위 변경은 Next 섹션 순서로 표현**. 위에 있을수록 먼저.

@@ -1,0 +1,33 @@
+═══════ 01_trait.mojo ═══════
+=== MOJO-10: Trait / parametric polymorphism ===
+
+[1] 단일 trait bound — render(Drawable)]
+[Circle.draw] r= 3.0
+[Square.draw] s= 5.0
+
+[2] 다중 trait bound — describe(Drawable & Stringable)]
+describe: Circle(7.0)
+[Circle.draw] r= 7.0
+
+[3] trait 상속 — Pet은 Animal의 contract도 만족]
+[Dog.sound] Rex → woof
+[Dog.sound] Rex → woof
+  owner: Alice
+
+[정리]
+  trait T = C++ concept
+  struct Foo(T1, T2) = struct Foo conforms to T1 and T2
+  fn f[T: Trait](x: T) = template<Trait T> + 컴파일 시점 monomorphization
+  fn f[T: A & B](x: T) = 다중 concept requires (C++20)
+  trait Pet(Animal) = trait inheritance (Rust 'trait Pet: Animal')
+  abstract method body는 '...'로 표기 (Python '...'와 같은 위치, 의미는 'unimplemented')
+
+═══════ 02_native_vs_interop_sum.mojo ═══════
+=== MOJO-16: native vs Python interop (동일 알고리즘) ===
+알고리즘: sum(0..N-1)
+
+size            | Mojo native ns | Python pure ns | NumPy ns       | pure/native | numpy/native
+----------------|----------------|----------------|----------------|-------------|--------------
+1000          20        12570        2460        598      117
+100000          20        1423340        29829        67778      1420
+10000000          20        82927906        14984769        3948947      713560

@@ -1,0 +1,25 @@
+# Python venv (2 GB, 재생성 가능: `python3 -m venv .venv && pip install modular`)
+.venv/
+
+# Python 캐시
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Mojo build 산출물 (재생성 가능, 학습 가치는 README에 기록됨)
+experiments/*/hello
+experiments/*/main
+experiments/*/out
+*.o
+*.so
+*.mojopkg
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# 임시 파일
+/tmp/
+*.tmp
