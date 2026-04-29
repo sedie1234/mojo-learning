@@ -1,0 +1,196 @@
+═══════ build/run: 01 Mojo SIMD kernel ═══════
+add8(1..8, 10): [11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0]
+add16(1..16, 100): [101.0, 102.0, 103.0, 104.0, 105.0, 106.0, 107.0, 108.0, 109.0, 110.0, 111.0, 112.0, 113.0, 114.0, 115.0, 116.0]
+
+═══════ build/run: 01 C++ AVX kernel ═══════
+add8: 11 12 13 14 15 16 17 18 
+add16: 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 
+
+═══════ run: 02 Mojo bench (scalar/SIMD16/vectorize) ═══════
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:7:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:10:31: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_scalar(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:10:58: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_scalar(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                                                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:11:31: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+              c: UnsafePointer[Float32], n: Int):
+                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:16:31: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_simd16(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:16:58: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_simd16(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                                                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:17:31: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+              c: UnsafePointer[Float32], n: Int):
+                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:29:34: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_vectorize(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                                 ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:29:61: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+fn add_vectorize(a: UnsafePointer[Float32], b: UnsafePointer[Float32],
+                                                            ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:30:34: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+                 c: UnsafePointer[Float32], n: Int):
+                                 ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:38:31: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           f: fn(UnsafePointer[Float32], UnsafePointer[Float32], UnsafePointer[Float32], Int),
+                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:38:55: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           f: fn(UnsafePointer[Float32], UnsafePointer[Float32], UnsafePointer[Float32], Int),
+                                                      ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:38:79: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           f: fn(UnsafePointer[Float32], UnsafePointer[Float32], UnsafePointer[Float32], Int),
+                                                                              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:39:28: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           a: UnsafePointer[Float32], b: UnsafePointer[Float32], c: UnsafePointer[Float32],
+                           ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:39:55: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           a: UnsafePointer[Float32], b: UnsafePointer[Float32], c: UnsafePointer[Float32],
+                                                      ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:39:82: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+           a: UnsafePointer[Float32], b: UnsafePointer[Float32], c: UnsafePointer[Float32],
+                                                                                 ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: 'UnsafePointer' declared here
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:55:12: error: value of type 'List[Float32]' cannot be implicitly copied, it does not conform to 'ImplicitlyCopyable'
+    return lst
+           ^~~
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:55:12: note: consider transferring the value with '^'
+    return lst
+           ^
+              ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:55:12: note: you can copy it explicitly with '.copy()'
+    return lst
+           ^
+              .copy()
+/home/hwan/workspace/mojo/.venv/bin/mojo: error: failed to parse the provided Mojo source module
+
+═══════ build/run: 02 C++ bench ═══════
+=== MOJO-11 비교: C++ vector add ===
+N              scalar(no-vec)  scalar(O3)      AVX-512         scalar/avx  auto/avx
+1024           220             50              50              4            0       
+    [avx512 bandwidth] 240 GB/s (effective)
+65536          12260           3140            3121            3            1       
+    [avx512 bandwidth] 251 GB/s (effective)
+1048576        203051          87031           89471           2            0       
+    [avx512 bandwidth] 140 GB/s (effective)
+16777216       7768955         8626070         7362373         1            1       
+    [avx512 bandwidth] 27 GB/s (effective)
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:33:10: error: no matching method in call to 'store'
+        c.store(idx, a.load[width=width](idx) + b.load[width=width](idx))
+        ~^~~~~~
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: value passed to 'self' cannot be converted from 'UnsafePointer[Float32, origin]' to 'UnsafePointer[Scalar[dtype], self.origin, address_space=self.address_space]'
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: value passed to 'self' cannot be converted from 'UnsafePointer[Float32, origin]' to 'UnsafePointer[Scalar[dtype], self.origin, address_space=self.address_space]'
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: expected at most 2 positional arguments, got 3
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:33:9: note: .mut of left value is 'mut' but the right value is 'True'
+        c.store(idx, a.load[width=width](idx) + b.load[width=width](idx))
+        ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:34:5: error: no matching function in call to 'vectorize'
+    vectorize[body, W](n)
+    ^~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'closure'
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'closure'
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:1:1: note: candidate not viable: 'vectorize' parameter 'simd_width' has 'Int' type, but value has type 'def[width: Int](idx: Int) capturing -> None'
+# MOJO-11: 벡터 add 벤치 — scalar / 명시적 SIMD16 / vectorize 비교
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:38:15: error: parametric functions may not be used as arguments; consider passing as a parameter instead
+           f: fn(UnsafePointer[Float32, _], UnsafePointer[Float32, _], UnsafePointer[Float32, _], Int),
+              ^
+/home/hwan/workspace/mojo/.venv/bin/mojo: error: failed to parse the provided Mojo source module
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:7:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:19:26: warning: assignment to 'a' was never used; assign to '_' instead?
+    var a = av.unsafe_ptr()
+                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:20:26: warning: assignment to 'b' was never used; assign to '_' instead?
+    var b = bv.unsafe_ptr()
+                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:21:26: warning: assignment to 'c' was never used; assign to '_' instead?
+    var c = cv.unsafe_ptr()
+                         ^
+=== MOJO-11: vector add (scalar/SIMD16/vectorize) ===
+alias W = 16 (AVX-512 native float32 lane count)
+
+N= 1024  scalar: 220 ns   simd16: 30 ns   ratio: 7
+     [bandwidth simd16]  396 GB/s (effective)
+#0 0x000071bad17001bb (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/libKGENCompilerRTShared.so+0x4e1bb)
+#1 0x000071bad16fd6b6 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/libKGENCompilerRTShared.so+0x4b6b6)
+#2 0x000071bad1700e67 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/libKGENCompilerRTShared.so+0x4ee67)
+#3 0x000071bacd045330 (/lib/x86_64-linux-gnu/libc.so.6+0x45330)
+#4 0x000071bad0c8bbd4 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/../lib/libAsyncRTRuntimeGlobals.so+0x8bbd4)
+#5 0x000071bad0c8be98 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/../lib/libAsyncRTRuntimeGlobals.so+0x8be98)
+#6 0x000071bad0c4c0c3 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/bin/../lib/libAsyncRTRuntimeGlobals.so+0x4c0c3)
+#7 0x000071ba46e02334
+/home/hwan/workspace/mojo/.venv/bin/mojo: error: execution crashed
+To get a symbolicated stack trace, compile your program using `mojo build` with debug info enabled (e.g., `-debug-level=line-tables`) and execute it separately.
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:7:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:19:26: warning: assignment to 'a' was never used; assign to '_' instead?
+    var a = av.unsafe_ptr()
+                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:20:26: warning: assignment to 'b' was never used; assign to '_' instead?
+    var b = bv.unsafe_ptr()
+                         ^
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:21:26: warning: assignment to 'c' was never used; assign to '_' instead?
+    var c = cv.unsafe_ptr()
+                         ^
+=== MOJO-11: vector add (scalar/SIMD16/vectorize) ===
+alias W = 16 (AVX-512 native float32 lane count)
+
+N= 1024  scalar: 220 ns   simd16: 30 ns   ratio: 7
+     [bandwidth simd16]  396 GB/s (effective)
+#0 0x00007200081241bb (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/libKGENCompilerRTShared.so+0x4e1bb)
+#1 0x00007200081216b6 (/home/hwan/workspace/mojo/.venv/lib/python3.12/site-packages/modular/lib/libKGENCompilerRTShared.so+0x4b6b6)
+/home/hwan/workspace/mojo/experiments/0009-simd-vector-add/02_simd_bench.mojo:6:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+=== MOJO-11: vector add (scalar vs explicit SIMD16) ===
+alias W = 16 (AVX-512 native float32 lane count)
+
+N= 1024  scalar: 430 ns   simd16: 70 ns   ratio: 6   bw(simd16): 173 GB/s
+N= 65536  scalar: 13191 ns   simd16: 4620 ns   ratio: 2   bw(simd16): 170 GB/s
+N= 1048576  scalar: 198881 ns   simd16: 73201 ns   ratio: 2   bw(simd16): 171 GB/s
+N= 16777216  scalar: 7817165 ns   simd16: 7519563 ns   ratio: 1   bw(simd16): 26 GB/s

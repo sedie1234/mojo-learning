@@ -38,10 +38,14 @@
 - [ ] **(NEW from 0008)** Mojo native auto-vectorize 정도 — XOR 루프가 0.18 ns/elem로 SIMD 추정. `vectorize` 명시 vs 자동 적용 비교 → T-11과 자연스럽게 연결
 
 ### 성능/SIMD
-- [ ] `SIMD[DType.float32, N]` 벡터 add — C++ intrinsics(AVX2)와 어셈블리 비교.
-- [ ] 단순 벡터 합 벤치: Python list / NumPy / C++ / Mojo 4종 비교.
-- [ ] Naive matmul 4종 비교 + Mojo의 `vectorize`/`parallelize` 적용 효과.
-- [ ] 캐시 친화적 matmul (블로킹) — Mojo에서 직접.
+- [x] `SIMD[DType.float32, N]` 벡터 add — C++ intrinsics(AVX2/AVX-512)와 어셈블리 비교. (→ 0009, T-11)
+- [ ] **(NEW from 0009)** `vectorize` decorator 0.26 정확한 시그니처 확정 + autovec 결과 비교
+- [ ] **(NEW from 0009)** `parallelize` 적용 — multi-core로 memory bandwidth × cores 끌어올리기
+- [ ] **(NEW from 0009)** 메모리 정렬 강제 — 64-byte aligned alloc + `vmovaps` 사용 가능 여부
+- [ ] **(NEW from 0009)** FMA — `a*b+c` 패턴이 단일 `vfmadd*ps`로 컴파일되는지
+- [ ] 단순 벡터 합 벤치: Python list / NumPy / C++ / Mojo 4종 비교 (T-12, reduction 패턴 → 0008과 합쳐 정리 가능)
+- [ ] Naive matmul 4종 비교 + Mojo의 `vectorize`/`parallelize` 적용 효과 (T-13)
+- [ ] 캐시 친화적 matmul (블로킹) — Mojo에서 직접 (T-14)
 
 ### Python 상호운용
 - [x] Mojo에서 NumPy 호출 — 객체 변환 비용 측정. (→ 0006, T-15)
@@ -64,6 +68,7 @@
 - Python interop 표면 + 비용 측정 — lifecycle(cold 17~39 ms / warm sub-μs), NumPy 변환 16~22 ns/elem, 타입변환 비대칭(Mojo→Py 자동, Py→Mojo `py=` 키워드 only), 예외 통합. (→ 0006)
 - Language Fundamentals 5건 — fn/def(0.26부터 둘 다 raises 명시 필수), struct(value, .copy() 명시 필요), numeric types(C++ stdint 매핑, wrap overflow), var only(let 폐기), ownership(read/mut/var + `^`, Rust 모델 단순화). (→ 0007)
 - Trait/parametric polymorphism + Python interop vs Mojo native cost — trait API(0.26: T: A & B, trait inheritance), Python pure ↔ Mojo native 100× 차, NumPy ↔ Mojo native 1~9×. (→ 0008)
+- SIMD vector add — Mojo `(c+i).store(a.load[width=16](i)+b.load[width=16](i))` ↔ C++ AVX-512 동일 `vaddps %zmm` 명령(ASM 검증). 캐시 영역 1.2~1.5× 느림(런타임 오버헤드), DRAM 동률 26 GB/s. Default scalar는 elementwise pattern에서 autovec 안 됨. (→ 0009, T-11)
 
 ---
 
