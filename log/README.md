@@ -53,6 +53,7 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0015 | [YOLO ONNX → MAX 시도 — CV 모델 경로 검증 (또 부정 결과)](0015-yolo-max-attempt.md) | done | 2026-04-29 | max, ai-workloads, cv, yolo, onnx, infeasibility |
 | 0014 | [MAX CPU 적용 가능성 조사 — Qwen3-4B / Gemma4-E2B 부정 결과](0014-max-cpu-survey.md) | done | 2026-04-29 | max, ai-workloads, llm, cpu-only, infeasibility |
 | 0013 | [Blocked matmul — Mojo vs C++ vs NumPy MKL (cache tiling)](0013-matmul-blocked.md) | done | 2026-04-29 | simd, performance, benchmark, matmul, cache-blocking, parallelize |
 | 0012 | [Matmul 다구현 비교 — naive / SIMD / Mojo parallelize / NumPy BLAS](0012-matmul-naive-vec-par.md) | done | 2026-04-29 | simd, performance, benchmark, matmul, parallelize, multi-thread |

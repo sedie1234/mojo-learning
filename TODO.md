@@ -50,6 +50,7 @@
 - [ ] **(NEW from 0013)** Register tiling matmul — MKL 격차(6-8×) 좁히기 위한 micro-kernel 8×8 또는 6×16 tile 설계
 - [ ] **(NEW from 0013)** prefetch hint Mojo 표면 (`prefetcht0/t1/t2`)
 - [ ] **(NEW from 0013)** MAX `linalg.matmul` 호출 — Mojo stack에 BLAS-class kernel 있는지 (직접 짜는 대신 활용)
+- [ ] **(NEW from 0013, GPU 필요)** GPU 환경에서 matmul 성능 재측정 — 현재 CPU에선 NumPy MKL 1356 GFLOPS @ N=512 (Mojo blocked 236 GFLOPS, 6× 격차)이 최고. GPU에서도 BLAS 라이브러리(cuBLAS)가 압도적인지, 아니면 Mojo의 SIMD/parallelize/blocked가 GPU에서 격차 좁힐 수 있는지 검증 필요. *현 머신은 GPU 없어 보류*.
 
 ### Python 상호운용
 - [x] Mojo에서 NumPy 호출 — 객체 변환 비용 측정. (→ 0006, T-15)
