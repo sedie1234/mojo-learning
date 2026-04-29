@@ -60,9 +60,13 @@
 - [ ] **(NEW from 0006)** `Python.evaluate("...")` 동적 코드 실행 표면 매핑 — 표현식 / 문장 / 함수 정의까지 가능한지
 
 ### MAX / AI
-- [ ] MAX 엔진 설치 및 ONNX/PyTorch 모델 로드.
-- [ ] 작은 모델(예: distilbert) 추론 — PyTorch vs MAX 처리량 비교.
-- [ ] `~/models/`의 기존 모델을 MAX에서 사용 가능한지 검토.
+- [x] MAX 엔진 설치 및 모델 로드 — Qwen3-4B/Gemma4-E2B CPU 부정 결과 (→ 0014, T-17)
+- [~] distilbert 추론 — **cancelled** (T-18)
+- [x] `~/models/` 기존 모델 MAX 사용 가능성 — Qwen3/Gemma4 모두 차단 (→ 0014, T-19)
+- [ ] **(NEW from 0014)** `max compile` / `max warm-cache` 양자화 워크플로우 — bfloat16 → float32/float8 변환 가능성
+- [ ] **(NEW from 0014)** 호환 작은 모델 (`google/gemma-3-1b-it`) HF download → MAX CPU 추론 — path 검증 목적
+- [ ] **(NEW from 0014)** Mojo `max.engine` Python API 직접 사용 — CLI보다 유연한 옵션
+- [ ] **(NEW from 0014)** llama.cpp baseline — Qwen3-4B Q4_K_M GGUF 추론 token/s 측정 (MAX 미사용 비교군)
 
 ## Done
 
@@ -77,6 +81,7 @@
 - sum reduction 4-way — Mojo SIMD16 acc.reduce_add() = C++ _mm512_reduce_add_ps (둘 다 0.023 ns/elem @ 1M). NumPy 4× 차, Python pure 333× 차. (→ 0011, T-12)
 - matmul 7-way 비교 (naive/SIMD/parallelize/BLAS) — Mojo SIMD+par 437 GFLOPS @ N=512, NumPy MKL 1356 GFLOPS, single-thread C++ AVX-512 61 GFLOPS. parallelize 시그니처 정복(`parallelize[task](n)`), vectorize는 미정복. (→ 0012, T-13)
 - blocked matmul cache tiling — N=2048에서 Mojo 236 / C++ 193 / MKL 1540 GFLOPS. blocked가 unblocked 추월하는 교차점 N≥1024. MKL 격차 6-8×는 register tiling 부재. (→ 0013, T-14)
+- MAX CPU 적용 가능성 조사 — Qwen3-4B(bfloat16↔CPU 비호환) / Gemma4-E2B(architecture 미지원) 둘 다 MAX 0.26 CPU 사용 불가. 본 머신에선 llama.cpp+GGUF 권장. (→ 0014, T-17/T-19 closed; T-18 cancelled)
 
 ---
 

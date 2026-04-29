@@ -1,0 +1,50 @@
+═══ MAX CPU 시도 결과 (work 0014) ═══
+
+## 시스템
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:            14Gi       8.5Gi       1.0Gi       103Mi       5.4Gi       6.0Gi
+
+GPU 없음 (max info: "No GPUs available, falling back to CPU")
+
+## 모델 인벤토리
+~/models/qwen-3/4B-Instruct/         (HF, safetensors, bfloat16, 7.6 GB)
+~/models/qwen-3/4B-Instruct-gguf-Q4/ (GGUF Q4_K_M, 2.4 GB, 단일 파일)
+~/models/gemma-4/E2B-it/             (HF, safetensors, 9.6 GB, model_type=gemma4)
+
+## 시도 1: bfloat16
+$ max generate --model-path ~/models/qwen-3/4B-Instruct --quantization-encoding bfloat16 --prompt "Hi" --max-new-tokens 3
+ValidationError: The encoding 'bfloat16' is not compatible with the selected device type 'cpu'.
+You have two options to resolve this:
+1. Use a different device
+2. Use a different encoding (encodings available for this model: bfloat16, float8_e4m3fn, float32)
+
+## 시도 2: float32
+$ max generate --model-path ~/models/qwen-3/4B-Instruct --quantization-encoding float32 ...
+ValidationError: quantization_encoding 'float32' is not supported by the repo
+
+## 시도 3: float8_e4m3fn
+$ max generate --model-path ~/models/qwen-3/4B-Instruct --quantization-encoding float8_e4m3fn ...
+ValidationError: quantization_encoding 'float8_e4m3fn' is not supported by the repo
+
+## 시도 4: q4_k (Qwen3 arch에서)
+$ max generate --model-path ~/models/qwen-3/4B-Instruct --quantization-encoding q4_k ...
+ValidationError: quantization_encoding of 'q4_k' not supported by MAX engine
+
+## 시도 5: GGUF 디렉토리 단독
+$ max generate --model-path ~/models/qwen-3/4B-Instruct-gguf-Q4 --quantization-encoding q4_k ...
+ValidationError: Unrecognized model in /home/hwan/models/qwen-3/4B-Instruct-gguf-Q4. Should have a `model_type` key in its config.json
+
+## Gemma4
+$ max list 2>&1 | grep -iE 'gemma'
+    Architecture: Gemma3ForCausalLM
+              google/gemma-3-1b-it / google/gemma-3-1b-pt
+    Architecture: Gemma3ForConditionalGeneration
+              google/gemma-3-12b-it / google/gemma-3-4b-it (~)
+                                                                                    
+→ Gemma4 (model_type=gemma4) architecture는 MAX 0.26 지원 목록에 없음.
+
+## 결론
+MAX 0.26 CPU 모드는 두 모델 모두 사용 불가:
+- Qwen3-4B: bfloat16 weights vs CPU 비호환, 다른 인코딩은 weights mismatch
+- Gemma4-E2B: architecture 자체 미지원
