@@ -53,6 +53,9 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0013 | [Blocked matmul — Mojo vs C++ vs NumPy MKL (cache tiling)](0013-matmul-blocked.md) | done | 2026-04-29 | simd, performance, benchmark, matmul, cache-blocking, parallelize |
+| 0012 | [Matmul 다구현 비교 — naive / SIMD / Mojo parallelize / NumPy BLAS](0012-matmul-naive-vec-par.md) | done | 2026-04-29 | simd, performance, benchmark, matmul, parallelize, multi-thread |
+| 0011 | [sum reduction 4-way — Python pure / NumPy / C++ AVX-512 / Mojo SIMD16](0011-sum-reduction-4way.md) | done | 2026-04-29 | simd, performance, benchmark, reduction |
 | 0010 | [vector add 4-way 비교 — Python pure / NumPy / C++ / Mojo JIT / Mojo AOT](0010-vector-add-4way.md) | done | 2026-04-29 | simd, performance, benchmark, jit-vs-aot, python-cpp-mojo |
 | 0009 | [SIMD vector add — Mojo SIMD16 vs C++ AVX-512 (벤치 + ASM)](0009-simd-vector-add.md) | done | 2026-04-29 | simd, performance, benchmark, asm, cpp-comparison |
 | 0008 | [Trait/parametric polymorphism + Python interop vs Mojo native cost](0008-trait-and-native-vs-interop.md) | done | 2026-04-29 | basics, trait, python-interop, benchmark |

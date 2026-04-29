@@ -1,0 +1,67 @@
+═══ build ═══
+^~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:17:14: error: expression must be mutable in assignment
+            c[i*N + j] = s
+            ~^~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:23:29: error: expression must be mutable in assignment
+        for j in range(N): c[i*N + j] = 0
+                           ~^~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:31:30: error: no matching method in call to 'store'
+                (c + i*N + j).store(vc + va * vb)
+                ~~~~~~~~~~~~~^~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'val'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'val'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: value passed to 'self' cannot be converted from 'UnsafePointer[Float32, origin]' to 'UnsafePointer[Scalar[dtype], self.origin, address_space=self.address_space]'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:31:17: note: .mut of left value is 'mut' but the right value is 'True'
+                (c + i*N + j).store(vc + va * vb)
+                ^
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:34:18: error: expression must be mutable for in-place operator destination
+                c[i*N + j] += va_scalar * b[k*N + j]; j += 1
+                ~^~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:41:29: error: expression must be mutable in assignment
+        for j in range(N): c[i*N + j] = 0
+                           ~^~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:49:30: error: no matching method in call to 'store'
+                (c + i*N + j).store(vc + va * vb)
+                ~~~~~~~~~~~~~^~~~~~
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'val'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'val'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:1:1: note: candidate not viable: value passed to 'self' cannot be converted from 'UnsafePointer[Float32, origin]' to 'UnsafePointer[Scalar[dtype], self.origin, address_space=self.address_space]'
+# work 0012 — Mojo matmul: naive / 명시 SIMD16 / parallelize
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:49:17: note: .mut of left value is 'mut' but the right value is 'True'
+                (c + i*N + j).store(vc + va * vb)
+                ^
+/home/hwan/workspace/mojo/experiments/0012-matmul-naive-vec-par/mojo_bench.mojo:52:18: error: expression must be mutable for in-place operator destination
+                c[i*N + j] += va_scalar * b[k*N + j]; j += 1
+                ~^~~~~~~~~
+/home/hwan/workspace/mojo/.venv/bin/mojo: error: failed to parse the provided Mojo source module
+
+═══ Python (pure 128 only + NumPy 4 sizes) ═══
+=== Python pure (naive triple loop) ===
+N=  128  median=      39294913 ns  GFLOPS=0.107
+
+=== NumPy a @ b (typically uses BLAS, multi-thread) ===
+N=  128  median=         11710 ns  GFLOPS=358.15
+N=  256  median=         40460 ns  GFLOPS=829.30
+N=  512  median=        198009 ns  GFLOPS=1355.67
+N= 1024  median=       1805925 ns  GFLOPS=1189.13
+
+═══ C++ ═══
+=== C++ matmul ===
+N=  128  naive(O3):       661019 ns (  6.35 GFLOPS)   avx512:       114850 ns ( 36.52 GFLOPS)
+N=  256  naive(O3):      9767473 ns (  3.44 GFLOPS)   avx512:       625048 ns ( 53.68 GFLOPS)
+N=  512  naive(O3):    118142780 ns (  2.27 GFLOPS)   avx512:      4382218 ns ( 61.26 GFLOPS)
+N= 1024  naive(O3):   2756136760 ns (  0.78 GFLOPS)   avx512:     34330135 ns ( 62.55 GFLOPS)
+
+═══ Mojo ═══
+/bin/bash: line 41: ./mojo_bench_aot: No such file or directory
+=== Mojo matmul: naive / SIMD16 / parallelize ===
+N= 128   naive= 987059 ns ( 4.249289810143254 GFLOPS)   simd16= 82020 ns ( 51.13695273161751 GFLOPS)   par= 13320 ns ( 314.8640492455521 GFLOPS)
+N= 256   naive= 9972478 ns ( 3.364703199675828 GFLOPS)   simd16= 544719 ns ( 61.599412542223526 GFLOPS)   par= 126670 ns ( 264.89434835124064 GFLOPS)
+N= 512   naive=(skipped, too slow)   simd16= 3430212 ns ( 78.25620624725053 GFLOPS)   par= 614328 ns ( 436.9571613907206 GFLOPS)
+N= 1024   naive=(skipped, too slow)   simd16= 29074458 ns ( 73.86151701051428 GFLOPS)   par= 5991247 ns ( 358.4367811180575 GFLOPS)

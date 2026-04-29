@@ -1,0 +1,24 @@
+═══ build ═══
+^~~~~
+
+═══ Python ═══
+=== Python pure ===
+N=     65536  median=        746088 ns  ns/elem=11.3844
+N=   1048576  median=       8072012 ns  ns/elem=7.6981
+
+=== NumPy a.sum() ===
+N=     65536  median=          7010 ns  ns/elem=0.1070  bw=37.4 GB/s
+N=   1048576  median=        101670 ns  ns/elem=0.0970  bw=41.3 GB/s
+N=  16777216  median=       2090153 ns  ns/elem=0.1246  bw=32.1 GB/s
+
+═══ C++ AVX-512 ═══
+=== C++ AVX-512 sum reduction ===
+N=     65536  median=          1500 ns  ns/elem=0.0229  bw=174.6 GB/s
+N=   1048576  median=         24180 ns  ns/elem=0.0231  bw=173.5 GB/s
+N=  16777216  median=       1413145 ns  ns/elem=0.0842  bw=47.5 GB/s
+
+═══ Mojo (AOT) ═══
+=== Mojo SIMD16 sum reduction ===
+N= 65536  median= 1500 ns  ns/elem= 0.02288818359375   bw= 174 GB/s  (sink= 5091382.5 )
+N= 1048576  median= 24330 ns  ns/elem= 0.023202896118164063   bw= 172 GB/s  (sink= 81704900.0 )
+N= 16777216  median= 1382755 ns  ns/elem= 0.08241862058639526   bw= 48 GB/s  (sink= 1307522700.0 )

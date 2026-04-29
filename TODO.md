@@ -43,9 +43,13 @@
 - [ ] **(NEW from 0009)** `parallelize` 적용 — multi-core로 memory bandwidth × cores 끌어올리기
 - [ ] **(NEW from 0009)** 메모리 정렬 강제 — 64-byte aligned alloc + `vmovaps` 사용 가능 여부
 - [ ] **(NEW from 0009)** FMA — `a*b+c` 패턴이 단일 `vfmadd*ps`로 컴파일되는지
-- [ ] 단순 벡터 합 벤치: Python list / NumPy / C++ / Mojo 4종 비교 (T-12, reduction 패턴 → 0008과 합쳐 정리 가능)
-- [ ] Naive matmul 4종 비교 + Mojo의 `vectorize`/`parallelize` 적용 효과 (T-13)
-- [ ] 캐시 친화적 matmul (블로킹) — Mojo에서 직접 (T-14)
+- [x] 단순 벡터 합 벤치: Python list / NumPy / C++ / Mojo 4종 비교 (→ 0011, T-12)
+- [x] Naive matmul 4종 비교 + Mojo의 `vectorize`/`parallelize` 적용 효과 (→ 0012, T-13)
+- [x] 캐시 친화적 matmul (블로킹) — Mojo에서 직접 (→ 0013, T-14)
+- [ ] **(NEW from 0012/0013)** `vectorize` 시그니처 정복 — 0.26에서 [body, W](n) / [W](body, n) 모두 실패, 정확한 형태 추적
+- [ ] **(NEW from 0013)** Register tiling matmul — MKL 격차(6-8×) 좁히기 위한 micro-kernel 8×8 또는 6×16 tile 설계
+- [ ] **(NEW from 0013)** prefetch hint Mojo 표면 (`prefetcht0/t1/t2`)
+- [ ] **(NEW from 0013)** MAX `linalg.matmul` 호출 — Mojo stack에 BLAS-class kernel 있는지 (직접 짜는 대신 활용)
 
 ### Python 상호운용
 - [x] Mojo에서 NumPy 호출 — 객체 변환 비용 측정. (→ 0006, T-15)
@@ -70,6 +74,9 @@
 - Trait/parametric polymorphism + Python interop vs Mojo native cost — trait API(0.26: T: A & B, trait inheritance), Python pure ↔ Mojo native 100× 차, NumPy ↔ Mojo native 1~9×. (→ 0008)
 - SIMD vector add — Mojo `(c+i).store(a.load[width=16](i)+b.load[width=16](i))` ↔ C++ AVX-512 동일 `vaddps %zmm` 명령(ASM 검증). 캐시 영역 1.2~1.5× 느림(런타임 오버헤드), DRAM 동률 26 GB/s. Default scalar는 elementwise pattern에서 autovec 안 됨. (→ 0009, T-11)
 - vector add 4-way 비교 — Python pure 21.97 / NumPy 0.087 / C++ 0.072 / Mojo JIT 0.074 / Mojo AOT 0.084 ns/elem (1M 기준). JIT vs AOT inner loop 동일, wall에서 280ms 차 (JIT 컴파일). (→ 0010, T-25)
+- sum reduction 4-way — Mojo SIMD16 acc.reduce_add() = C++ _mm512_reduce_add_ps (둘 다 0.023 ns/elem @ 1M). NumPy 4× 차, Python pure 333× 차. (→ 0011, T-12)
+- matmul 7-way 비교 (naive/SIMD/parallelize/BLAS) — Mojo SIMD+par 437 GFLOPS @ N=512, NumPy MKL 1356 GFLOPS, single-thread C++ AVX-512 61 GFLOPS. parallelize 시그니처 정복(`parallelize[task](n)`), vectorize는 미정복. (→ 0012, T-13)
+- blocked matmul cache tiling — N=2048에서 Mojo 236 / C++ 193 / MKL 1540 GFLOPS. blocked가 unblocked 추월하는 교차점 N≥1024. MKL 격차 6-8×는 register tiling 부재. (→ 0013, T-14)
 
 ---
 

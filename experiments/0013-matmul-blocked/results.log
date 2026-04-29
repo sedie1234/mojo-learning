@@ -1,0 +1,23 @@
+═══ build ═══
+^~~~~
+^~~~~
+^~~~~
+^~~~~
+
+═══ NumPy reference ═══
+N=  512  median=        188200 ns  GFLOPS=1426.32
+N= 1024  median=       1252749 ns  GFLOPS=1714.22
+N= 2048  median=      11155134 ns  GFLOPS=1540.09
+
+═══ C++ blocked + OpenMP ═══
+=== C++ blocked matmul (BM=64 BK=64 BN=128) + AVX-512 + OpenMP ===
+threads = 16
+N=  512  median=       1298639 ns  GFLOPS=206.71
+N= 1024  median=      11672513 ns  GFLOPS=183.98
+N= 2048  median=      89109631 ns  GFLOPS=192.79
+
+═══ Mojo blocked + SIMD + parallelize ═══
+=== Mojo blocked matmul (BM= 64  BK= 64  BN= 128 ) + SIMD16 + parallelize ===
+N= 512   median= 1574128 ns  GFLOPS= 170.52951568772318
+N= 1024   median= 10210965 ns  GFLOPS= 210.31150706015475
+N= 2048   median= 72762755 ns  GFLOPS= 236.10800536472257
