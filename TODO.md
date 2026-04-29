@@ -68,6 +68,9 @@
 - [ ] **(NEW from 0014)** 호환 작은 모델 (`google/gemma-3-1b-it`) HF download → MAX CPU 추론 — path 검증 목적
 - [ ] **(NEW from 0014)** Mojo `max.engine` Python API 직접 사용 — CLI보다 유연한 옵션
 - [ ] **(NEW from 0014)** llama.cpp baseline — Qwen3-4B Q4_K_M GGUF 추론 token/s 측정 (MAX 미사용 비교군)
+- [ ] **(NEW from 0015)** `max.graph` API에 Conv2d/BatchNorm/SiLU op 표면 조사 — YOLO 직접 작성 가능성
+- [ ] **(NEW from 0015)** `max.graph` API로 toy CNN(2-conv MLP) 직접 빌드 → 컴파일 → 추론, MAX Graph 메커니즘 1급 검증
+- [ ] **(NEW from 0015)** ONNX → `max.graph` 변환기 가능성 검색 (둘 다 MLIR 기반) 또는 MAX 다음 릴리스 ONNX import 추가 모니터
 
 ## Done
 
