@@ -67,20 +67,30 @@ GGUF 디렉토리(`qwen-3/4B-Instruct-gguf-Q4/`) 직접:
 `--model-path <HF dir> --weight-path <gguf 파일>` 조합:
 - ❌ q4_k는 MAX 엔진 자체에서 Qwen3 arch에 미지원 — 어차피 거부.
 
-### 2.5 Gemma4
+### 2.5 Gemma4 — 2단 차단
 
-architecture 미지원이라 시도 자체 무의미. 확인만 기록:
+(추후 정정) 원래 `max list`만 보고 "MAX 미지원"이라 결론냈으나, 실제 `max generate`로 시도하면 **MAX 본체에 도달도 못함** — 더 앞단인 **HuggingFace `transformers` 라이브러리**가 먼저 거부.
 
+```
+$ max generate --model-path ~/models/gemma-4/E2B-it ...
+ValueError: The checkpoint you are trying to load has model type `gemma4`
+but Transformers does not recognize this architecture.
+(transformers 4.57.6 — gemma4 model_type 미등록)
+```
+
+즉 차단 체인은 **2단**:
+1. **transformers** (현재 차단) — `model_type=gemma4` 미인식. `pip install --upgrade transformers` 또는 git 최신 설치로 풀릴 가능성.
+2. **MAX architecture registry** — `max list`에 `Gemma4*` 미등재. transformers 업그레이드해도 여기서 또 거부.
+
+전제 사유:
 ```
 $ max list 2>&1 | grep -i gemma
     Architecture: Gemma3ForCausalLM
-              google/gemma-3-1b-it
-              google/gemma-3-1b-pt
     Architecture: Gemma3ForConditionalGeneration
-              google/gemma-3-12b-it (~)
+(Gemma4 없음)
 ```
 
-→ Gemma4 family는 MAX 0.26에서 사용 불가.
+→ Gemma4 사용은 MAX 다음 릴리스 + transformers 업그레이드 *둘 다* 필요.
 
 ## 3. 예상되는 결과
 
@@ -96,7 +106,8 @@ $ max list 2>&1 | grep -i gemma
 
 | 차단 | 영향받는 모델 | 우회 가능? |
 |------|---------------|-----------|
-| Gemma4 architecture 미지원 (MAX list에 없음) | Gemma4-E2B | ❌ MAX 업데이트 대기 또는 Gemma3로 대체 |
+| **transformers 4.57.6에 `gemma4` 미등록** | Gemma4-E2B (1단 차단) | transformers 업그레이드 (단 다음 단도 막혀있음) |
+| MAX registry에 `Gemma4*` 미등재 | Gemma4-E2B (2단 차단) | MAX 업데이트 대기 |
 | bfloat16 + CPU 비호환 | Qwen3-4B (bfloat16 weights) | 우회 어려움 (다른 인코딩 모두 차단) |
 | repo weights ≠ 요청 인코딩 | Qwen3-4B (float32/float8 시도) | weights 사전 변환 필요 (큰 작업) |
 | q4_k가 Qwen3 arch에서 미지원 | GGUF Q4 변형 | MAX 업데이트 대기 |
