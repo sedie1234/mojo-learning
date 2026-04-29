@@ -1,0 +1,88 @@
+═══════ build C++ + Mojo AOT ═══════
+  ✓ cpp_bench built
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+  ✓ mojo_bench_aot built
+-rwxrwxr-x 1 hwan hwan 21312 Apr 29 14:09 cpp_bench
+-rwxrwxr-x 1 hwan hwan 24272 Apr 29 14:09 mojo_bench_aot
+
+═══════ run: Python ═══════
+=== Python pure ===
+N=      1024  median=         29039 ns  ns/elem=28.36
+N=     65536  median=       1993454 ns  ns/elem=30.42
+N=   1048576  median=      23038384 ns  ns/elem=21.97
+
+=== NumPy (np.add out=c) ===
+N=      1024  median=           400 ns  ns/elem=0.3906  bw=30.6 GB/s
+N=     65536  median=          3510 ns  ns/elem=0.0536  bw=224.0 GB/s
+N=   1048576  median=         90888 ns  ns/elem=0.0867  bw=138.4 GB/s
+N=  16777216  median=       7328331 ns  ns/elem=0.4368  bw=27.5 GB/s
+
+═══════ run: C++ AVX-512 ═══════
+=== C++ AVX-512 explicit ===
+N=      1024  median=            50 ns  ns/elem=0.0488  bw=240.9 GB/s
+N=     65536  median=          3900 ns  ns/elem=0.0595  bw=201.6 GB/s
+N=   1048576  median=         75118 ns  ns/elem=0.0716  bw=167.5 GB/s
+N=  16777216  median=       7361441 ns  ns/elem=0.4388  bw=27.3 GB/s
+
+═══════ run: Mojo JIT (mojo run) ═══════
+^~~~~
+=== Mojo SIMD16 (W=16, AVX-512) ===
+N= 1024  median= 30 ns   ns/elem= 0    bw= 396 GB/s
+N= 65536  median= 2820 ns   ns/elem= 0    bw= 278 GB/s
+N= 1048576  median= 77408 ns   ns/elem= 0    bw= 162 GB/s
+N= 16777216  median= 7797398 ns   ns/elem= 0    bw= 25 GB/s
+
+═══════ run: Mojo AOT (./binary) ═══════
+=== Mojo SIMD16 (W=16, AVX-512) ===
+N= 1024  median= 40 ns   ns/elem= 0    bw= 299 GB/s
+N= 65536  median= 2989 ns   ns/elem= 0    bw= 263 GB/s
+N= 1048576  median= 88497 ns   ns/elem= 0    bw= 142 GB/s
+N= 16777216  median= 7641262 ns   ns/elem= 0    bw= 26 GB/s
+
+═══════ end-to-end wall time (3회씩 측정) ═══════
+
+[Python (pure+numpy 합, 큰 N 포함)]
+  run ?d: real=0.87 user=1.84 sys=0.07 maxRSS=239256 KB
+  run ?d: real=0.82 user=1.74 sys=0.09 maxRSS=239100 KB
+  run ?d: real=0.83 user=1.75 sys=0.07 maxRSS=238684 KB
+[C++ AOT (./cpp_bench)]
+  run ?d: real=0.15 user=0.11 sys=0.03 maxRSS=200080 KB
+  run ?d: real=0.15 user=0.11 sys=0.03 maxRSS=200336 KB
+  run ?d: real=0.15 user=0.11 sys=0.03 maxRSS=200332 KB
+[Mojo JIT (mojo run mojo_bench.mojo)]
+/home/hwan/workspace/mojo/experiments/0010-vector-add-4way/mojo_bench.mojo:5:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+  run ?d: real=0.44 user=0.37 sys=0.06 maxRSS=347692 KB
+/home/hwan/workspace/mojo/experiments/0010-vector-add-4way/mojo_bench.mojo:5:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+  run ?d: real=0.44 user=0.37 sys=0.05 maxRSS=347656 KB
+/home/hwan/workspace/mojo/experiments/0010-vector-add-4way/mojo_bench.mojo:5:1: warning: 'alias' is deprecated, use 'comptime' instead
+alias W: Int = 16     # AVX-512 native float32 width
+^~~~~
+comptime
+  run ?d: real=0.45 user=0.38 sys=0.05 maxRSS=347904 KB
+[Mojo AOT (./mojo_bench_aot)]
+  run ?d: real=0.16 user=0.11 sys=0.05 maxRSS=232736 KB
+  run ?d: real=0.16 user=0.12 sys=0.04 maxRSS=232312 KB
+  run ?d: real=0.16 user=0.12 sys=0.03 maxRSS=232516 KB
+
+== Python end-to-end (3회) ==
+/usr/bin/time: cannot run python: No such file or directory
+Command exited with non-zero status 127
+  run 1: real=0.00 user=0.00 sys=0.00 maxRSS=1120 KB
+/usr/bin/time: cannot run python: No such file or directory
+Command exited with non-zero status 127
+  run 2: real=0.00 user=0.00 sys=0.00 maxRSS=1120 KB
+/usr/bin/time: cannot run python: No such file or directory
+Command exited with non-zero status 127
+  run 3: real=0.00 user=0.00 sys=0.00 maxRSS=1120 KB
+== Python end-to-end (3회) ==
+  run 1: real=0.82 user=1.78 sys=0.08 maxRSS=239120 KB
+  run 2: real=0.80 user=1.77 sys=0.08 maxRSS=239176 KB
+  run 3: real=0.80 user=1.77 sys=0.08 maxRSS=238988 KB

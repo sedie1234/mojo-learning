@@ -53,6 +53,7 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0010 | [vector add 4-way 비교 — Python pure / NumPy / C++ / Mojo JIT / Mojo AOT](0010-vector-add-4way.md) | done | 2026-04-29 | simd, performance, benchmark, jit-vs-aot, python-cpp-mojo |
 | 0009 | [SIMD vector add — Mojo SIMD16 vs C++ AVX-512 (벤치 + ASM)](0009-simd-vector-add.md) | done | 2026-04-29 | simd, performance, benchmark, asm, cpp-comparison |
 | 0008 | [Trait/parametric polymorphism + Python interop vs Mojo native cost](0008-trait-and-native-vs-interop.md) | done | 2026-04-29 | basics, trait, python-interop, benchmark |
 | 0007 | [Language Fundamentals 5건 (fn vs def, struct, numeric, var, ownership)](0007-language-fundamentals-survey.md) | done | 2026-04-29 | basics, language-fundamentals, ownership, types |

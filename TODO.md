@@ -69,6 +69,7 @@
 - Language Fundamentals 5건 — fn/def(0.26부터 둘 다 raises 명시 필수), struct(value, .copy() 명시 필요), numeric types(C++ stdint 매핑, wrap overflow), var only(let 폐기), ownership(read/mut/var + `^`, Rust 모델 단순화). (→ 0007)
 - Trait/parametric polymorphism + Python interop vs Mojo native cost — trait API(0.26: T: A & B, trait inheritance), Python pure ↔ Mojo native 100× 차, NumPy ↔ Mojo native 1~9×. (→ 0008)
 - SIMD vector add — Mojo `(c+i).store(a.load[width=16](i)+b.load[width=16](i))` ↔ C++ AVX-512 동일 `vaddps %zmm` 명령(ASM 검증). 캐시 영역 1.2~1.5× 느림(런타임 오버헤드), DRAM 동률 26 GB/s. Default scalar는 elementwise pattern에서 autovec 안 됨. (→ 0009, T-11)
+- vector add 4-way 비교 — Python pure 21.97 / NumPy 0.087 / C++ 0.072 / Mojo JIT 0.074 / Mojo AOT 0.084 ns/elem (1M 기준). JIT vs AOT inner loop 동일, wall에서 280ms 차 (JIT 컴파일). (→ 0010, T-25)
 
 ---
 
