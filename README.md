@@ -124,6 +124,16 @@ mojo build hello.mojo -o hello && ./hello
 - **Modular 공식 문서**: https://docs.modular.com/mojo
 - **Mojo 언어 레퍼런스** (0.26 시점): 본 저장소의 keyword 변경 표(`log/0007`)가 실제 도구 동작 기준 검증됨
 
+## 학습 상태 (2026-04-29 종결판)
+
+⏸️ **본 머신 (CPU only) 기준 학습 cycle 일시 종료**. GPU 확보 시 재개 예정.
+
+- **검증 완료**: Mojo 언어 자체 (work 0009-0013, NumPy MKL과 동급 SIMD/parallelize), Python interop 비용 모델 (work 0006/0008/0010), 0.26 키워드 표면 (work 0007), MAX 0.26 import 매트릭스의 한계 (work 0014/0015 — 부정 결과)
+- **미검증 (GPU 필요)**: MAX Serve LLM serving, Mojo GPU 커널, GPU matmul 비교, Qwen3-4B GPU 추론
+- **재개 trigger**: GPU 확보 / MAX 0.27+ 릴리스 / 새 op 개발 필요성 발생
+
+다시 돌아올 때 first action: `cat docs/performance-summary.md` + Plane workspace `mojo` project의 정리 노트 7페이지 훑기.
+
 ## 라이선스
 
 개인 학습용. 자유롭게 복제/수정. 한국어 응답 전제로 작성됨.

@@ -1,16 +1,38 @@
 # Mojo 학습 TODO
 
 > 이 파일은 **mojo-orchestrator** agent가 관리한다. 사용자도 자유롭게 추가/편집 가능.
-> 새 아이디어는 **Backlog**에 쌓고, 다음에 할 것을 **Next**로 옮기고, 진행 중인 것을 **In Progress**로, 끝난 것은 **Done**으로 옮긴다.
-> 각 항목 끝 `(→ NNNN)` 표기는 해당 work의 로그 번호 — 완료 시 채운다.
+> 각 항목 끝 `(→ NNNN)` 표기는 해당 work의 로그 번호.
 
-## In Progress
+## ⏸️ 학습 cycle 일시 종료 (2026-04-29)
 
-(없음)
+**상태**: 본 머신(CPU only) 기준 학습 완료. **GPU 확보 시 재개**.
 
-## Next
+**재개 trigger**:
+- GPU 확보 (NVIDIA 또는 AMD)
+- MAX 다음 메이저 버전 (0.27+) — Gemma4 등재 / ONNX import / bfloat16 CPU 등 추가 가능성
+- 회사·프로젝트에서 새 op 개발 필요 (PyTorch + Mojo 커널 시나리오)
 
-(없음 — Language Fundamentals 5건 모두 0007에서 처리됨)
+**돌아올 때 first action**: `cat docs/performance-summary.md` + Plane 정리 노트 7페이지 훑기 → 어디서 멈췄는지 한눈에.
+
+## ⏭️ GPU 확보 시 재개 (Priority A)
+
+- [ ] **(NEW from 0013, GPU 필요)** GPU 환경에서 matmul 성능 재측정 — 현재 CPU에선 NumPy MKL 1356 GFLOPS @ N=512가 최고. GPU에서도 BLAS(cuBLAS)가 압도적인지, Mojo SIMD/parallelize/blocked가 격차 좁힐 수 있는지
+- [ ] MAX Serve로 작은 LLM (gemma-3-1b 등 호환 모델) production 흐름 검증
+- [ ] Mojo GPU 커널 작성 — work 0005에서 본 `libNVPTX` 동봉의 의미, PTX emit 흐름
+- [ ] Qwen3-4B GPU 추론 (work 0014에서 막힌 bfloat16+CPU path를 GPU에서)
+- [ ] PyTorch + Mojo 커널 hybrid (GPU 버전, 진짜 가속 시나리오)
+
+## 🐌 비-GPU에서도 가능한 후속 (Priority B, 선택)
+
+- [ ] **(NEW from 0014/0015)** `max.graph` Python API로 toy CNN(2-conv) 직접 빌드 → 컴파일 → 추론, MAX Graph 메커니즘 1급 검증
+- [ ] **(NEW from 0014)** Exaone-3.5 q4_k MAX CPU 시도 — 첫 MAX-CPU 모델 통과 가능성
+- [ ] **(NEW from 0014)** llama.cpp baseline — Qwen3-4B Q4_K_M GGUF 추론 token/s (MAX 비교군)
+- [ ] **(NEW from 0009/0012)** `vectorize` 0.26 정확한 시그니처 정복
+- [ ] **(NEW from 0015)** PyTorch + Mojo 커스텀 conv 1-layer hybrid demo (CPU 정합성/시간)
+
+## Next (현 cycle에선 비움)
+
+(GPU 시 위 Priority A 첫 항목으로 이동)
 
 ## Backlog
 
