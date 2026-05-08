@@ -1,0 +1,20 @@
+=== 01: 0.26 @parameter fn 패턴 ===
+/home/hwan/workspace/mojo/experiments/0024-1.0-safe-closure-parallelize/01_026_pattern.mojo:11:5: warning: 'fn' is deprecated, use 'def' instead
+    fn task(i: Int):
+    ^~
+    def
+total = 249999750000
+=== 02: @parameter def (fn → def 마이그레이션 적용) ===
+total = 249999750000
+
+=== 03: capture list {p} 시도 ===
+/home/hwan/workspace/mojo/experiments/0024-1.0-safe-closure-parallelize/03_explicit_capture_braces.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'copy'
+from std.algorithm.functional import parallelize
+^
+/home/hwan/workspace/mojo/experiments/0024-1.0-safe-closure-parallelize/03_explicit_capture_braces.mojo:1:1: note: generated function with type 'def[T: KeyElement, H: Hasher = AHasher[SIMD[DType.uint64, 4](0)], +](*, copy: Set[T, H]) -> Set[T, H]'
+from std.algorithm.functional import parallelize
+^
+/home/hwan/workspace/mojo/experiments/0024-1.0-safe-closure-parallelize/03_explicit_capture_braces.mojo:10:24: note: 'KeyElement' is aka 'Copyable & Hashable & Equatable'
+    def task[capture: {p}](i: Int):
+                       ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module

@@ -53,6 +53,16 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0025 | [[1.0] E10 — MAX 26.3 + Qwen3 retry (CPU)](0025-1.0-max-qwen3-retry.md) | done | 2026-05-08 | mojo-1.0, max, qwen3, gemma4, cpu-only, infeasibility |
+| 0024 | [[1.0] E09 — Safe closure ref capture + parallelize](0024-1.0-safe-closure-parallelize.md) | partial | 2026-05-08 | mojo-1.0, closure, parallelize, capture |
+| 0023 | [[1.0] E08 — Conditional conformance 신기능](0023-1.0-conditional-conformance.md) | partial | 2026-05-08 | mojo-1.0, trait, conformance, generics |
+| 0022 | [[1.0] E07 — Bounds checking default ON 성능 영향](0022-1.0-bounds-checking.md) | done | 2026-05-08 | mojo-1.0, perf, safety, bounds-check |
+| 0021 | [[1.0] E06 — SIMD vector add 회귀 (vaddps %zmm 동등성)](0021-1.0-simd-regression.md) | done | 2026-05-08 | mojo-1.0, simd, asm, regression |
+| 0020 | [[1.0] E05 — UnsafePointer non-null + Optional 패턴](0020-1.0-unsafeptr-nonnull.md) | done | 2026-05-08 | mojo-1.0, pointer, optional, migration |
+| 0019 | [[1.0] E04 — __copyinit__/__moveinit__ → __init__ keyword-only 마이그레이션](0019-1.0-copyinit-migration.md) | done | 2026-05-08 | mojo-1.0, struct, copy, migration |
+| 0018 | [[1.0] E03 — Negative indexing 제거 검증](0018-1.0-negative-indexing.md) | done | 2026-05-08 | mojo-1.0, breaking-change, list, string |
+| 0017 | [[1.0] E02 — fn → def 마이그레이션](0017-1.0-fn-to-def.md) | done | 2026-05-08 | mojo-1.0, fn-vs-def, migration |
+| 0016 | [[1.0] E01 — 0.26 hello world 회귀](0016-1.0-hello-regression.md) | done | 2026-05-08 | mojo-1.0, regression, basics |
 | 0015 | [YOLO ONNX → MAX 시도 — CV 모델 경로 검증 (또 부정 결과)](0015-yolo-max-attempt.md) | done | 2026-04-29 | max, ai-workloads, cv, yolo, onnx, infeasibility |
 | 0014 | [MAX CPU 적용 가능성 조사 — Qwen3-4B / Gemma4-E2B 부정 결과](0014-max-cpu-survey.md) | done | 2026-04-29 | max, ai-workloads, llm, cpu-only, infeasibility |
 | 0013 | [Blocked matmul — Mojo vs C++ vs NumPy MKL (cache tiling)](0013-matmul-blocked.md) | done | 2026-04-29 | simd, performance, benchmark, matmul, cache-blocking, parallelize |

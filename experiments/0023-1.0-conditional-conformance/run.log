@@ -1,0 +1,52 @@
+=== 01: 메서드에 where 절 ===
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/01_where_method.mojo:5:12: error: parameters must always have a type
+struct Box[T]:
+           ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 02: impl ... where ... ===
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/02_impl_where.mojo:9:1: error: expressions are not allowed at global scope; move this into a function body
+impl Box[T] as Stringable where T: Stringable:
+^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/02_impl_where.mojo:9:6: error: statements must start at the beginning of a line
+impl Box[T] as Stringable where T: Stringable:
+     ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/02_impl_where.mojo:5:12: error: parameters must always have a type
+struct Box[T]:
+           ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+=== 03: T: Copyable + where 메서드 ===
+                                       ^
+                                       Self.T
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/03_with_anytype.mojo:4:12: note: parameter 'T' declared here
+struct Box[T: Copyable]:
+           ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/03_with_anytype.mojo:9:40: error: 'Copyable' does not implement the '__bool__' method
+    def describe(self) -> String where T: Stringable:
+                                       ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/03_with_anytype.mojo:9:40: error: failed to emit constraint expression
+    def describe(self) -> String where T: Stringable:
+                                       ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/03_with_anytype.mojo:10:9: error: unexpected token in expression
+        return "Box(" + self.x.to_str() + ")"
+        ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 04: Tuple Defaultable conditional ===
+0 0
+=== 05: comptime if T.conforms_to[Trait]() ===
+                              Self.T
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/05_conforms_to.mojo:9:12: note: parameter 'T' declared here
+struct Box[T: Copyable]:
+           ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/05_conforms_to.mojo:15:21: error: unqualified access to struct parameter 'T'; use 'Self.T' instead
+        comptime if T.conforms_to[Stringable]():
+                    ^
+                    Self.T
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/05_conforms_to.mojo:9:12: note: parameter 'T' declared here
+struct Box[T: Copyable]:
+           ^
+/home/hwan/workspace/mojo/experiments/0023-1.0-conditional-conformance/05_conforms_to.mojo:15:22: error: 'Copyable' value has no attribute 'conforms_to'
+        comptime if T.conforms_to[Stringable]():
+                    ~^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module

@@ -1,0 +1,33 @@
+=== 01_fn_style.mojo (deprecated fn) ===
+/home/hwan/workspace/mojo/experiments/0017-1.0-fn-to-def/01_fn_style.mojo:2:1: warning: 'fn' is deprecated, use 'def' instead
+fn add(a: Int, b: Int) -> Int:
+^~
+def
+/home/hwan/workspace/mojo/experiments/0017-1.0-fn-to-def/01_fn_style.mojo:5:1: warning: 'fn' is deprecated, use 'def' instead
+fn sum_to(n: Int) -> Int:
+^~
+def
+/home/hwan/workspace/mojo/experiments/0017-1.0-fn-to-def/01_fn_style.mojo:13:1: warning: 'fn' is deprecated, use 'def' instead
+fn main():
+^~
+def
+add(3,4) = 7
+sum_to(100) = 5050
+
+=== 02_def_style.mojo (1.0 def) ===
+add(3,4) = 7
+sum_to(100) = 5050
+
+=== sed로 일괄 치환 가능성 확인 ===
+add(3,4) = 7
+sum_to(100) = 5050
+
+=== 03_sed_migrated.mojo == 02_def_style.mojo? ===
+--- 02_def_style.mojo	2026-05-08 18:09:55.096491416 +0900
++++ 03_sed_migrated.mojo	2026-05-08 18:09:57.034411720 +0900
+@@ -1,4 +1,4 @@
+-# 1.0 def 스타일 — 동일 코드 def으로 변환
++# 0.26 fn 스타일 — 모든 인자/반환 타입 명시 strict mode
+ def add(a: Int, b: Int) -> Int:
+     return a + b
+ 

@@ -1,0 +1,63 @@
+=== A: 0.26 kernel 그대로 (fn) — JIT ===
+/home/hwan/workspace/mojo/experiments/0021-1.0-simd-regression/01_kernel_026_asis.mojo:8:1: warning: 'fn' is deprecated, use 'def' instead
+fn add16(a: SIMD[DType.float32, 16], b: SIMD[DType.float32, 16]) -> SIMD[DType.float32, 16]:
+^~
+def
+/home/hwan/workspace/mojo/experiments/0021-1.0-simd-regression/01_kernel_026_asis.mojo:11:1: warning: 'fn' is deprecated, use 'def' instead
+fn main():
+^~
+def
+add8(1..8, 10): [11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0]
+add16(1..16, 100): [101.0, 102.0, 103.0, 104.0, 105.0, 106.0, 107.0, 108.0, 109.0, 110.0, 111.0, 112.0, 113.0, 114.0, 115.0, 116.0]
+
+=== B: 1.0 def-migrated kernel — JIT ===
+add8(1..8, 10): [11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0]
+add16(1..16, 100): [101.0, 102.0, 103.0, 104.0, 105.0, 106.0, 107.0, 108.0, 109.0, 110.0, 111.0, 112.0, 113.0, 114.0, 115.0, 116.0]
+
+=== C: 1.0 def-migrated kernel — ASM dump (vaddps 확인) ===
+
+=== vaddps 명령 출현 ===
+0
+=== bench JIT 실행 ===
+/home/hwan/workspace/mojo/experiments/0021-1.0-simd-regression/03_bench_10.mojo:4:1: warning: 'alias' is deprecated; use 'comptime'
+alias W: Int = 16
+^~~~~
+comptime
+/home/hwan/workspace/mojo/experiments/0021-1.0-simd-regression/03_bench_10.mojo:2:16: error: unable to locate module 'sort'
+from std.algorithm.sort import sort
+               ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== bench ASM emit ===
+comptime
+/home/hwan/workspace/mojo/experiments/0021-1.0-simd-regression/03_bench_10.mojo:2:16: error: unable to locate module 'sort'
+from std.algorithm.sort import sort
+               ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== vaddps 출현 (전체) ===
+ugrep: warning: 03_bench_10.s: No such file or directory
+=== bench JIT ===
+=== [1.0] vector add (scalar vs explicit SIMD16) ===
+comptime W = 16 (AVX-512 native float32 lane count)
+
+N= 1024  scalar: 220 ns   simd16: 30 ns   ratio: 7   bw(simd16): 396 GB/s
+N= 65536  scalar: 12479 ns   simd16: 3199 ns   ratio: 3   bw(simd16): 245 GB/s
+N= 1048576  scalar: 198792 ns   simd16: 73673 ns   ratio: 2   bw(simd16): 170 GB/s
+N= 16777216  scalar: 6610009 ns   simd16: 4651043 ns   ratio: 1   bw(simd16): 43 GB/s
+
+=== bench AOT + ASM ===
+binary:
+-rwxrwxr-x 1 hwan hwan 33272 May  8 18:16 03_bench_10.bin
+
+=== AOT bench 실행 ===
+=== [1.0] vector add (scalar vs explicit SIMD16) ===
+comptime W = 16 (AVX-512 native float32 lane count)
+
+N= 1024  scalar: 470 ns   simd16: 40 ns   ratio: 11   bw(simd16): 299 GB/s
+N= 65536  scalar: 12279 ns   simd16: 3060 ns   ratio: 4   bw(simd16): 256 GB/s
+N= 1048576  scalar: 196372 ns   simd16: 73514 ns   ratio: 2   bw(simd16): 171 GB/s
+N= 16777216  scalar: 6687342 ns   simd16: 4758284 ns   ratio: 1   bw(simd16): 42 GB/s
+
+=== vaddps 출현 ===
+2

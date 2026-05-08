@@ -1,0 +1,23 @@
+=== Mojo version ===
+Mojo 1.0.0b1 (a9591de6)
+
+=== 01_hello_026.mojo (fn 사용) — JIT ===
+/home/hwan/workspace/mojo/experiments/0016-1.0-hello-regression/01_hello_026.mojo:2:1: warning: 'fn' is deprecated, use 'def' instead
+fn main():
+^~
+def
+Hello, Mojo!
+Int = 42
+
+=== 01_hello_026.mojo — AOT build ===
+/home/hwan/workspace/mojo/experiments/0016-1.0-hello-regression/01_hello_026.mojo:2:1: warning: 'fn' is deprecated, use 'def' instead
+fn main():
+^~
+def
+-rwxrwxr-x 1 hwan hwan 18640 May  8 18:08 hello_026
+Hello, Mojo!
+Int = 42
+
+=== 02_hello_def.mojo (def 사용) — JIT ===
+Hello, Mojo!
+Int = 42

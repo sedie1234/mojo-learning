@@ -1,0 +1,77 @@
+=== 01: List[-1] (실패 기대) ===
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:3:23: error: no matching function in initialization
+    var xs = List[Int](10, 20, 30, 40, 50)
+             ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: expected at most 0 positional arguments, got 5
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'capacity'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 2 required keyword-only arguments: 'length', 'fill'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: '__list_literal__'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: expected at most 1 positional argument, got 5
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'unsafe_uninit_length'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'copy'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'take'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/01_negative_idx_should_fail.mojo:1:1: note: generated function with type 'def[T: Copyable, +](*, deinit take: List[T]) -> List[T]'
+# 1.0에서 negative indexing이 컴파일 에러여야 함
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+→ 예상대로 실패 (exit=1)
+
+=== 02: 마이그레이션 패턴 ===
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:3:23: error: no matching function in initialization
+    var xs = List[Int](10, 20, 30, 40, 50)
+             ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: expected at most 0 positional arguments, got 5
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'capacity'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 2 required keyword-only arguments: 'length', 'fill'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: '__list_literal__'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: expected at most 1 positional argument, got 5
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'unsafe_uninit_length'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'copy'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'take'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/02_migration_pattern.mojo:1:1: note: generated function with type 'def[T: Copyable, +](*, deinit take: List[T]) -> List[T]'
+# 1.0 권장 마이그레이션 패턴: x[len(x) - 1]
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 03: String[-1] (실패 기대) ===
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/03_string_negative.mojo:4:14: error: no matching method in call to '__getitem__'
+    var c = s[-1]                     # ★ 컴파일 에러 예상
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/03_string_negative.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'byte'
+# String도 negative index 차단되는지 확인
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/03_string_negative.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'byte'
+# String도 negative index 차단되는지 확인
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/03_string_negative.mojo:1:1: note: candidate not viable: missing 1 required keyword-only argument: 'byte'
+# String도 negative index 차단되는지 확인
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+→ 예상대로 실패 (exit=1)
+=== 04: list literal + xs[-1] (실패 기대) ===
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/04_list_literal.mojo:2:5: error: function instantiation failed
+def main():
+    ^
+/home/hwan/workspace/mojo/experiments/0018-1.0-negative-indexing/04_list_literal.mojo:5:22: note: call expansion failed
+    var last_neg = xs[-1]                 # negative — 컴파일 에러 예상
+oss/modular/mojo/stdlib/std/collections/list.mojo:1303:9: note: constraint failed: negative indexing is not supported, use e.g. `x[len(x) - 1]`
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to run the pass manager
+→ exit=1
+
+=== 05: 마이그레이션 패턴 (성공 기대) ===
+len = 5
+last = 50
+first = 10
+
+=== 06: String[byte=0] 시도 ===
+h

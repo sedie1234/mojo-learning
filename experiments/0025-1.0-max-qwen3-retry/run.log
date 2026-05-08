@@ -1,0 +1,205 @@
+=== max version ===
+MAX 26.3.0
+
+=== max list (CPU only) ===
+18:23:30.388 INFO: Metrics initialized.
+
+
+    Architecture: ExaoneForCausalLM
+
+         Example Huggingface Repo Ids: 
+              LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct
+              LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+              LGAI-EXAONE/EXAONE-3.5-32B-Instruct
+
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+         Encoding Supported: q4_k
+         Encoding Supported: q6_k
+
+    Architecture: ExaoneForCausalLM_ModuleV3
+
+         Example Huggingface Repo Ids: 
+              LGAI-EXAONE/EXAONE-3.5-2.4B-Instruct
+              LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+              LGAI-EXAONE/EXAONE-3.5-32B-Instruct
+
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+
+    Architecture: DeepseekV2ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              deepseek-ai/DeepSeek-V2-Lite-Chat
+
+         Encoding Supported: bfloat16
+
+    Architecture: DeepseekV3ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              deepseek-ai/DeepSeek-V3
+
+         Encoding Supported: bfloat16
+         Encoding Supported: float8_e4m3fn
+         Encoding Supported: float4_e2m1fnx2
+
+    Architecture: DeepseekV32ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              deepseek-ai/DeepSeek-V3.2
+              deepseek-ai/DeepSeek-V3.2-Exp
+
+         Encoding Supported: float8_e4m3fn
+
+    Architecture: DeepseekV3ForCausalLMNextN
+
+=== transformers AutoConfig — Gemma4 / Qwen3 ===
+PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+--- Qwen3 ---
+FAIL: Repo id must be in the form 'repo_name' or 'namespace/repo_name': '/home/hwan/models/qwen-3/0.6B'. Use `repo_type` argument if needed.
+--- Gemma4 ---
+FAIL: The checkpoint you are trying to load has model type `gemma4` but Transformers does not recognize this architecture. This could be because of an issue with the checkpoint, or because your version of Transformers is out of date.
+
+You can update Transformers with the command `pip install --upgrade transformers`. If this does not work, and the checkpoint is very new, then there may not be a release version that supports this model yet. In this case, you can get the most up-to-date code by installing Transformers from source with the command `pip install git+https://github.com/huggingface/transformers.git`
+=== max list - Qwen architectures ===
+
+    Architecture: Qwen2ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              Qwen/Qwen2.5-7B-Instruct
+              Qwen/QwQ-32B
+
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+
+    Architecture: Qwen2_5_VLForConditionalGeneration
+
+         Example Huggingface Repo Ids: 
+              Qwen/Qwen2.5-VL-3B-Instruct
+              Qwen/Qwen2.5-VL-7B-Instruct
+
+         Encoding Supported: float8_e4m3fn
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+
+    Architecture: Qwen3ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              Qwen/Qwen3-8B
+              Qwen/Qwen3-30B-A3B
+
+         Encoding Supported: float8_e4m3fn
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+
+    Architecture: Qwen3MoeForCausalLM
+
+         Example Huggingface Repo Ids: 
+              Qwen/Qwen3-30B-A3B-Instruct
+              Qwen/Qwen3-30B-A3B-Instruct-2507-FP8
+
+         Encoding Supported: float8_e4m3fn
+         Encoding Supported: bfloat16
+         Encoding Supported: float32
+
+
+=== max list - Gemma architectures ===
+
+    Architecture: Gemma3ForCausalLM
+
+         Example Huggingface Repo Ids: 
+              google/gemma-3-1b-it
+              google/gemma-3-1b-pt
+
+         Encoding Supported: bfloat16
+
+    Architecture: Gemma3ForCausalLM_ModuleV3
+
+         Example Huggingface Repo Ids: 
+              google/gemma-3-1b-it
+              google/gemma-3-1b-pt
+
+         Encoding Supported: bfloat16
+
+    Architecture: Gemma3ForConditionalGeneration
+
+         Example Huggingface Repo Ids: 
+              google/gemma-3-4b-it
+              google/gemma-3-4b-pt
+              google/gemma-3-12b-it
+              google/gemma-3-12b-pt
+              google/gemma-3-27b-it
+              google/gemma-3-27b-pt
+
+         Encoding Supported: bfloat16
+         Encoding Supported: float8_e4m3fn
+
+
+=== Qwen3 config from model dir ===
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hwan/models/qwen-3/0.6B/config.json'
+=== Qwen3-4B config ===
+model_type: qwen3
+architectures: ['Qwen3ForCausalLM']
+torch_dtype: bfloat16
+
+=== max generate Qwen3 CPU bfloat16 시도 (TIMEOUT 60s) ===
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/entrypoints/cli/config.py", line 368, in wrapped
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/entrypoints/cli/config.py", line 368, in wrapped
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 7 more times]
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/entrypoints/cli/config.py", line 495, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/entrypoints/pipelines.py", line 369, in cli_pipeline
+    pipeline_config = PipelineConfig(**config_kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for PipelineConfig
+  Value error, The encoding 'bfloat16' is not compatible with the selected device type 'cpu'.
+
+You have two options to resolve this:
+1. Use a different device
+2. Use a different encoding (encodings available for this model: bfloat16, float32, float8_e4m3fn)
+
+Please use the --help flag for more information. [type=value_error, input_value={'model_path': '/home/hwa...-1, device_type='cpu')]}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+exit=0
+=== Qwen3 CPU float32 ===
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/lib/pipeline_variants/text_generation.py", line 202, in __init__
+    self._pipeline_model = pipeline_model(
+                           ^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/architectures/llama3/model.py", line 172, in __init__
+    self.model = self.load_model(session)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/architectures/qwen3/model.py", line 206, in load_model
+    graph = self._build_graph(self.weights, self.adapter, session)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/architectures/qwen3/model.py", line 260, in _build_graph
+    nn_model = Qwen3(model_config, ep_manager=ep_manager)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/architectures/qwen3/qwen3.py", line 326, in __init__
+    Qwen3TransformerBlock(
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/pipelines/architectures/qwen3/qwen3.py", line 139, in __init__
+    self.allreduce = Allreduce(num_accelerators=num_devices)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hwan/workspace/mojo/.venv-1.0/lib/python3.12/site-packages/max/nn/comm/allreduce.py", line 59, in __init__
+    self.devices = [Accelerator(id=id) for id in range(num_accelerators)]
+                    ^^^^^^^^^^^^^^^^^^
+ValueError: failed to create device: No supported "gpu" device available.
+  CUDA information: Failed to open library "libnvidia-ml.so.1"
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+  HIP information:  Failed to open library "libamdhip64.so": libamdhip64.so: cannot open shared object file: No such file or directory
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+To get more accurate error information, set MODULAR_DEVICE_CONTEXT_SYNC_MODE=true.
+  Metal information: 
+exit=0

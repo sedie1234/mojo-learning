@@ -1,0 +1,35 @@
+=== 01: 0.26 unsafe_ptr() 그대로 ===
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/01_026_unsafe_ptr.mojo:1:6: warning: Implicit standard library imports are deprecated and will be removed in a future release; fully qualify with 'std.' instead
+from memory import UnsafePointer
+     ^
+     std.
+sum = 150
+
+=== 02: Optional[UnsafePointer] 패턴 ===
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/02_optional_unsafe.mojo:1:6: warning: Implicit standard library imports are deprecated and will be removed in a future release; fully qualify with 'std.' instead
+from memory import UnsafePointer
+     ^
+     std.
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/02_optional_unsafe.mojo:3:51: error: 'UnsafePointer' failed to infer parameter 'origin', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+def maybe_ptr(yes: Bool) -> Optional[UnsafePointer[Int]]:
+                                                  ^
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/02_optional_unsafe.mojo:1:1: note: 'UnsafePointer' declared here
+from memory import UnsafePointer
+^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+→ exit=1
+=== 03: Optional[UnsafePointer[Int, _]] 패턴 ===
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/03_optional_fixed.mojo:3:51: error: 'UnsafePointer[Int, ?]' is not concrete, use '[]' to bind missing parameters
+def maybe_ptr(yes: Bool) -> Optional[UnsafePointer[Int, _]]:
+                                                  ^
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/03_optional_fixed.mojo:3:37: error: 'Optional' failed to infer parameter 'T', specify the parameter or use '_' or '...' to unbind the parameter explicitly
+def maybe_ptr(yes: Bool) -> Optional[UnsafePointer[Int, _]]:
+                                    ^
+/home/hwan/workspace/mojo/experiments/0020-1.0-unsafeptr-nonnull/03_optional_fixed.mojo:1:1: note: 'Optional' declared here
+from std.memory import UnsafePointer
+^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+→ exit=1
+
+=== 04: std. prefix migration ===
+sum = 150

@@ -1,5 +1,6 @@
 # Python venv (2 GB, 재생성 가능: `python3 -m venv .venv && pip install modular`)
 .venv/
+.venv-*/
 
 # Python 캐시
 __pycache__/
@@ -23,3 +24,8 @@ experiments/*/out
 # 임시 파일
 /tmp/
 *.tmp
+
+# 1.0 빌드 산출물
+experiments/*/hello_026
+experiments/*/*.bin
+experiments/*/*.s

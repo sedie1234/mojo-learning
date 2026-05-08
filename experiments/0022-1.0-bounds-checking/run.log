@@ -1,0 +1,10 @@
+=== JIT 실행 ===
+N= 1024  subscript: 210 ns   unsafe: 210 ns   overhead: 0 %
+N= 65536  subscript: 11899 ns   unsafe: 11889 ns   overhead: 0 %
+N= 1048576  subscript: 190595 ns   unsafe: 190065 ns   overhead: 0 %
+N= 16777216  subscript: 3379909 ns   unsafe: 3331232 ns   overhead: 1 %
+
+=== AOT + ASM dump (subscript loop, bounds check 코드 보일까) ===
+
+=== bounds 관련 panic/unreachable 키워드 ===
+0

@@ -1,0 +1,32 @@
+=== 01: 0.26 __copyinit__ 패턴 ===
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/01_026_pattern.mojo:4:5: warning: 'fn' is deprecated, use 'def' instead
+    fn __init__(out self, x: Int):
+    ^~
+    def
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/01_026_pattern.mojo:6:5: warning: 'fn' is deprecated, use 'def' instead
+    fn __copyinit__(out self, copy: Self):
+    ^~
+    def
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/01_026_pattern.mojo:7:13: error: 'None' has no attributes
+        self.x = copy.x
+        ~~~~^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+→ exit=1
+
+=== 02: 1.0 keyword-only __init__ 패턴 ===
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/02_10_keyword_only_init.mojo:4:5: warning: 'fn' is deprecated, use 'def' instead
+    fn __init__(out self, x: Int):
+    ^~
+    def
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/02_10_keyword_only_init.mojo:6:5: warning: 'fn' is deprecated, use 'def' instead
+    fn __init__(out self, *, copy: Self):    # keyword-only copy
+    ^~
+    def
+7
+
+=== 03: minimal — ctor 자동 생성 기대 ===
+/home/hwan/workspace/mojo/experiments/0019-1.0-copyinit-migration/03_minimal.mojo:4:5: warning: 'fn' is deprecated, use 'def' instead
+    fn __init__(out self, x: Int):
+    ^~
+    def
+7
