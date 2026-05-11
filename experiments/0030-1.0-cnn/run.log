@@ -1,0 +1,3 @@
+=== [1.0] 2D conv CPU — H= 64  W= 64  C_in= 16  C_out= 32  K= 3  ===
+median: 869774 ns   GFLOPS: 43.40057601103734
+out[0]= 75.590004   out[H*W*C_out-1]= 75.71

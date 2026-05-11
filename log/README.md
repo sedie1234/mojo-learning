@@ -53,6 +53,11 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0030 | [[1.0] CNN: 2D Conv (CPU 실측 + GPU 코드)](0030-1.0-cnn.md) | done | 2026-05-11 | mojo-1.0, cnn, conv2d, gpu, cpu, simt |
+| 0029 | [[1.0] GPU LLM 코드 소개 (max serve + Python client)](0029-1.0-gpu-llm.md) | done | 2026-05-11 | mojo-1.0, max-serve, llm, gpu, openai-compat |
+| 0028 | [[1.0] GPU SIMT 코드 소개 (vector add + reduction + matmul)](0028-1.0-gpu-simt.md) | code-only | 2026-05-11 | mojo-1.0, gpu, simt, cuda-mapping |
+| 0027 | [[1.0] Vector add 보강 (parallelize 결합 + ops/byte 증명)](0027-1.0-vector-parallelize.md) | done | 2026-05-11 | mojo-1.0, simd, parallelize, roofline, ops-per-byte |
+| 0026 | [[1.0] Matmul 1.0 (naive/SIMD/parallelize/blocked)](0026-1.0-matmul.md) | done | 2026-05-11 | mojo-1.0, simd, matmul, parallelize, blocked, regression |
 | 0025 | [[1.0] E10 — MAX 26.3 + Qwen3 retry (CPU)](0025-1.0-max-qwen3-retry.md) | done | 2026-05-08 | mojo-1.0, max, qwen3, gemma4, cpu-only, infeasibility |
 | 0024 | [[1.0] E09 — Safe closure ref capture + parallelize](0024-1.0-safe-closure-parallelize.md) | partial | 2026-05-08 | mojo-1.0, closure, parallelize, capture |
 | 0023 | [[1.0] E08 — Conditional conformance 신기능](0023-1.0-conditional-conformance.md) | partial | 2026-05-08 | mojo-1.0, trait, conformance, generics |

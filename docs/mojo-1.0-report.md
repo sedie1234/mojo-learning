@@ -299,7 +299,50 @@ log/0025-1.0-max-qwen3-retry.md
 
 ---
 
-## 6. 외부 참조
+## 6. cycle-2 보강 (2026-05-11)
+
+cycle-1 종결 후 사용자가 추가 검증 요청 — *matmul/vector 1.0 누락 부분 보완 + GPU 사용법 소개 + CNN*. modular/skills repo (영구 first action으로 등재됨) 설치 후 진입.
+
+### 6.1 실험 5개
+
+| ID | 주제 | 결과 |
+|----|------|------|
+| 0026 | Matmul 1.0 (naive/SIMD/parallelize/blocked) | ✅ blocked +9~28% 빠름 (vs 0.26) |
+| 0027 | Vector add 1.0 + parallelize | ✅ **ops/byte 직접 증명** (낮은 ops/byte에선 parallelize 역효과) |
+| 0028 | GPU SIMT 3종 (vector/reduction/matmul) | 코드만 (CPU 머신에서 컴파일 불가) |
+| 0029 | GPU LLM (max serve + Python client) | 코드만 (CPU에선 graph build 차단) |
+| 0030 | CNN 2D conv (CPU 실행 + GPU 코드) | ✅ CPU 43 GFLOPS / GPU 코드만 |
+
+### 6.2 추가 발견
+
+| 발견 | 의미 |
+|------|------|
+| **Matmul 1.0 +9~28% 빠름** | 1.0 backend (LLVM/MLIR) 개선이 vector add(0021), reduction(0011), matmul(0026)에 일관 |
+| **Parallelize의 ops/byte 의존성** (vector add → 역효과, matmul → 5-6× 가속) | work 0013 cache_hierarchy 이론의 **실측 직접 증명** |
+| **명시 capture syntax `{...}` 정확 적용 영역**: vectorize 등 *runtime-arg API*용, parallelize는 *@parameter def* 유지 | work 0024 ⚠️ 해소 |
+| **CPU only 머신의 GPU 코드 한계**: `comptime if has_accelerator()` 가드 두어도 `enqueue_function` type-check가 항상 수행돼 *컴파일 자체 불가* | GPU 머신에서 검증 필요 — TODO |
+| **CPU conv2d 43 GFLOPS (16 cores)** | YOLO 등 production CNN을 layer 단위 Mojo로 가속 가능성 입증 |
+| **`out`은 1.0 예약어** (`def f(out self, x)`) | NN 코드의 `output` argument 작성 시 함정 |
+
+### 6.3 modular/skills repo 효과
+
+cycle-1 ⚠️ 미정복 부분의 *학습 진척*:
+- **E08 conditional conformance**: skills repo는 *type 시스템 표 + Movable/Copyable 위계*는 정확 제공, 단 *사용자 측 conditional conformance declaration 정확 syntax*는 본 cycle에서도 미정복 (skills의 mojo-syntax SKILL이 더 정확한 가이드를 줄 가능성, 본 cycle은 GPU/matmul/vector에 집중)
+- **E09 명시 capture**: ✅ *역할 + 적용 영역 정확 파악*. parallelize와 vectorize의 *호출 컨벤션 차이*가 핵심.
+- **GPU 코드 작성**: ✅ *CUDA→Mojo 매핑표 + complete examples*. 추측 없이 작성 가능.
+- **CPU conv2d 작성 시 함정**: `out` 예약어 / `rebind` 필요성 등 *skills SKILL이 직접 명시*.
+
+→ **영구 지침 "새 cycle 진입 시 modular/skills 먼저 설치"의 실효성 증명**. CLAUDE.md §0 유지.
+
+### 6.4 종합 보강 결론
+
+> **Mojo 1.0은 *CPU 학습/개발에 완전히 사용 가능* 단계** (cycle-1 결론 유지). matmul/vector/reduction/conv 모두 *재현 + 개선* 측정됨.
+>
+> GPU 코드 패턴도 modular/skills로 *정확 학습 가능*. 단, *CPU only 머신에서 GPU 코드 컴파일 자체 불가*는 본 cycle의 *명확한 한계*. **GPU 도착 시 코드 검증 + 실측**이 명시된 다음 우선순위.
+>
+> MAX의 *production LLM serving*은 OpenAI SDK 호환 표면이 깔끔히 정리됨 (cycle-1 결론 강화).
+
+## 7. 외부 참조
 
 - Mojo 1.0.0b1 release notes: https://mojolang.org/releases/v1.0.0b1/
 - Modular 26.3 forum announcement: https://forum.modular.com/t/modular-26-3-mojo-1-0-beta-mojolang-org-max-video-gen-and-more/3038

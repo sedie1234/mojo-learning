@@ -1,0 +1,20 @@
+=== 01 vector add (CPU 머신, guard 안의 GPU 코드는 컴파일 시도) ===
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/01_gpu_vector_add.mojo:1:1: note: candidate not viable: failed to infer parameter 'signature_func'
+# GPU vector add — Mojo 1.0 SIMT 모델
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/01_gpu_vector_add.mojo:1:1: note: candidate not viable: arguments passed both as positional and keyword operand: 'grid_dim', 'block_dim'
+# GPU vector add — Mojo 1.0 SIMT 모델
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 02 reduction ===
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/02_gpu_reduction.mojo:1:1: note: candidate not viable: failed to infer parameter 'signature_func'
+# GPU 1D sum reduction — tree reduction in shared memory + warp shuffle
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/02_gpu_reduction.mojo:1:1: note: candidate not viable: arguments passed both as positional and keyword operand: 'grid_dim', 'block_dim'
+# GPU 1D sum reduction — tree reduction in shared memory + warp shuffle
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 03 matmul ===
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/03_gpu_matmul.mojo:1:1: note: candidate not viable: failed to infer parameter 'signature_func'
+# GPU 2D tiled matmul — shared memory blocking + synchronization
+/home/hwan/workspace/mojo/experiments/0028-1.0-gpu-simt/03_gpu_matmul.mojo:1:1: note: candidate not viable: arguments passed both as positional and keyword operand: 'grid_dim', 'block_dim'
+# GPU 2D tiled matmul — shared memory blocking + synchronization
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module

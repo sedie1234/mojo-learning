@@ -1,0 +1,31 @@
+=== [1.0] vector add: SIMD16 single-thread vs SIMD16+parallelize ===
+N= 1048576   single: 78490 ns ( 160 GB/s)   par16: 237112 ns ( 53 GB/s)   speedup: 0 x
+N= 16777216   single: 4582141 ns ( 43 GB/s)   par16: 4295729 ns ( 46 GB/s)   speedup: 1 x
+N= 67108864   single: 19742585 ns ( 40 GB/s)   par16: 19005010 ns ( 42 GB/s)   speedup: 1 x
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/02_explicit_capture.mojo:13:22: error: expected ':' in function definition
+    def task(i: Int) {read p, read n}:
+                     ^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+=== 03: top-level def + 명시 capture {read p} ===
+    ^~~~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/03_capture_topfn.mojo:1:1: note: candidate not viable: failed to infer parameter 'origins'
+# SKILL.md 예시 그대로 — top-level def + capture {} after arg list
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/03_capture_topfn.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'num_workers'
+# SKILL.md 예시 그대로 — top-level def + capture {} after arg list
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/03_capture_topfn.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'num_work_items'
+# SKILL.md 예시 그대로 — top-level def + capture {} after arg list
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/03_capture_topfn.mojo:1:1: note: candidate not viable: missing 2 required positional arguments: 'num_work_items', 'num_workers'
+# SKILL.md 예시 그대로 — top-level def + capture {} after arg list
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+
+=== 04: top-level def, capture 생략 ===
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/04_no_capture.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'num_workers'
+from std.algorithm.functional import parallelize
+^
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/04_no_capture.mojo:1:1: note: candidate not viable: missing 1 required positional argument: 'num_work_items'
+from std.algorithm.functional import parallelize
+^
+/home/hwan/workspace/mojo/experiments/0027-1.0-vector-parallelize/04_no_capture.mojo:1:1: note: candidate not viable: missing 2 required positional arguments: 'num_work_items', 'num_workers'
+from std.algorithm.functional import parallelize
+^
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
