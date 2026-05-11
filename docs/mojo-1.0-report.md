@@ -216,6 +216,13 @@ parallelize[task](n)
 3. **MAX는 GPU 도착 후에 본격 검증**. CPU에선 1.0/26.3에서도 실용 가치 없음. llama.cpp/onnxruntime이 CPU 시나리오의 정공법 (0.26 결론 유지).
 4. **Mojo native SIMD/parallelize는 1.0에서 *그대로 권장***. 학습 자산 보호 + 성능 개선까지.
 
+### 3.5 참고 — Modular 공식 AI Agent Skills (본 cycle 미활용)
+
+- 본 cycle에서는 release notes를 WebFetch로 읽고 컴파일러 에러를 단서로 직접 syntax를 추정하는 *probe-driven* 방식만 사용함. 그 결과 E08(conditional conformance) / E09(명시 capture)에서 syntax 미정복 ⚠️.
+- Modular는 별도로 *AI Agent Skills* repo를 공개 중: https://github.com/modular/skills — Mojo/MAX 1.0+의 *공식 권장 syntax/패턴*이 LLM (Claude Code/Cursor/Codex/Gemini CLI 호환) 진입점으로 정리되어 있음.
+- 다음 Mojo 작업 시작 시 `~/.claude/skills/`에 설치 권장. 미활용은 본 cycle의 한계가 아니라 *알게 된 시점이 cycle 종료 이후*이기 때문.
+- 후속 cycle에서는 first action으로 skill repo 설치 후 진행 — 미정복 ⚠️ 항목들의 정확 syntax가 그 안에 있을 가능성 높음.
+
 ---
 
 ## 4. 결론

@@ -14,6 +14,16 @@
 
 **돌아올 때 first action**: `cat docs/performance-summary.md` + Plane 정리 노트 7페이지 훑기 → 어디서 멈췄는지 한눈에.
 
+## 📌 [참고] Modular 공식 AI Agent Skills (다음 cycle 시작 시 설치)
+
+- repo: https://github.com/modular/skills
+- 설치: Claude Code의 경우 `~/.claude/skills/`에 clone/symlink
+- 효과: Mojo/MAX 1.0+의 *공식 권장 syntax/패턴* (conditional conformance, 명시 capture, MAX 사용법 등)을 LLM이 *직접* 활용. 본 1.0 cycle에서 E08/E09가 ⚠️로 끝난 이유의 보완 수단.
+- **다음 Mojo 작업 시작 시 *first action*에 추가**:
+  ```bash
+  cd ~/.claude/skills && git clone https://github.com/modular/skills.git modular-skills
+  ```
+
 ## ⏭️ GPU 확보 시 재개 (Priority A)
 
 - [ ] **(NEW from 0013, GPU 필요)** GPU 환경에서 matmul 성능 재측정 — 현재 CPU에선 NumPy MKL 1356 GFLOPS @ N=512가 최고. GPU에서도 BLAS(cuBLAS)가 압도적인지, Mojo SIMD/parallelize/blocked가 격차 좁힐 수 있는지
