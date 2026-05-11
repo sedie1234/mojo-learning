@@ -2,6 +2,20 @@
 
 이 디렉토리는 사용자가 **Mojo 언어를 배우고 실험하기 위한 전용 공간**이다. Claude는 이 워크스페이스에서 작업할 때 아래 규칙을 반드시 따른다.
 
+## 0. 🚨 새 cycle 진입 시 First Action (필수)
+
+이 워크스페이스에서 *새 실험/검증/학습 cycle*을 시작하기 전, 다른 어떤 작업보다 *먼저* 아래를 수행한다:
+
+```bash
+# Modular 공식 AI agent skills 설치/갱신
+mkdir -p ~/.claude/skills
+cd ~/.claude/skills && \
+  ( [ -d modular-skills ] && git -C modular-skills pull \
+    || git clone https://github.com/modular/skills.git modular-skills )
+```
+
+설치 후 그 결과(설치 OK / pull OK / 어떤 skill 들이 들어왔는지 한 줄)를 사용자에게 보고한 뒤에야 본 작업에 진입한다. **이 단계를 건너뛰고 진입하면 syntax 미정복으로 인한 ⚠️ 결과가 재발**한다 (2026-05-08 1.0.0b1 cycle의 E08/E09 사례). 이미 설치되어 있으면 `git pull`로 update만.
+
 ## 1. 사용자 프로필
 
 - 주력 언어: **C++ (강함) > Python**.
