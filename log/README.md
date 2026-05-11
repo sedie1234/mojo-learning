@@ -53,6 +53,11 @@ related_code: experiments/NNNN-<slug>/   # 코드 없으면 생략
 
 | # | 제목 | 상태 | 날짜 | 태그 |
 |---|------|------|------|------|
+| 0035 | [[1.0] StableHLO 호환성](0035-1.0-stablehlo-compat.md) | done | 2026-05-11 | mojo-1.0, stablehlo, mlir, dialect, infeasibility |
+| 0034 | [[1.0] ONNX 호환성 (max.engine crash 발견)](0034-1.0-onnx-compat.md) | done | 2026-05-11 | mojo-1.0, onnx, onnxruntime, max-engine, mlir-context-crash |
+| 0033 | [[1.0] PyTorch 호환성 (CPU)](0033-1.0-pytorch-compat.md) | done | 2026-05-11 | mojo-1.0, pytorch, interop, cpu |
+| 0032 | [[1.0] NumPy 호환성](0032-1.0-numpy-compat.md) | done | 2026-05-11 | mojo-1.0, numpy, interop, marshalling |
+| 0031 | [[1.0] Python 호환성 회귀](0031-1.0-python-compat.md) | done | 2026-05-11 | mojo-1.0, python-interop, lifecycle, regression |
 | 0030 | [[1.0] CNN: 2D Conv (CPU 실측 + GPU 코드)](0030-1.0-cnn.md) | done | 2026-05-11 | mojo-1.0, cnn, conv2d, gpu, cpu, simt |
 | 0029 | [[1.0] GPU LLM 코드 소개 (max serve + Python client)](0029-1.0-gpu-llm.md) | done | 2026-05-11 | mojo-1.0, max-serve, llm, gpu, openai-compat |
 | 0028 | [[1.0] GPU SIMT 코드 소개 (vector add + reduction + matmul)](0028-1.0-gpu-simt.md) | code-only | 2026-05-11 | mojo-1.0, gpu, simt, cuda-mapping |

@@ -1,0 +1,14 @@
+=== [1.0] Python interop lifecycle ===
+math cold import: 25737841 ns
+math warm import (median of 5): 360 ns
+sys first import (after Py_Initialize): 500 ns
+numpy cold import: 40904764 ns
+numpy warm import: 2120 ns
+
+=== Type 변환 (Python → Mojo) ===
+Int(py=42) = 42
+Float64(py=3.14) = 3.14
+String(py='hello') = hello
+
+=== 예외 통합 ===
+caught: division by zero

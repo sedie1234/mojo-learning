@@ -342,7 +342,82 @@ cycle-1 ⚠️ 미정복 부분의 *학습 진척*:
 >
 > MAX의 *production LLM serving*은 OpenAI SDK 호환 표면이 깔끔히 정리됨 (cycle-1 결론 강화).
 
-## 7. 외부 참조
+## 7. 호환성 매트릭스 (cycle-3, work 0031-0035)
+
+사용자 질문 5건 (Python / NumPy / PyTorch / ONNX / StableHLO) 실험 결과.
+
+### 7.1 한 표 — 호환성 종합
+
+| 대상 | Mojo 1.0 / MAX 26.3 호환성 | 주요 관찰 |
+|------|:--:|------|
+| **Python** | ✅ 0.26 ↔ 1.0 *동일 비용 모델* | math/numpy cold·warm import 동일, type 변환 4종 동일, 예외 통합 동일 |
+| **NumPy** | ✅ *bit-perfect 동일* (16~22 ns/elem) | ndarray PyObject 그대로, 모든 API 동작. zero-copy buffer 진입은 미정복 |
+| **PyTorch (CPU)** | ✅ 완전 동작 | torch 2.11.0+cpu / transformers 5.2.0. nn.Linear forward 49 μs |
+| **ONNX (Python interop)** | ✅ onnxruntime 1.26.0 via interop | yolov8n 메타데이터 정상, 추론은 Python boundary 한 번 |
+| **ONNX (max.engine import 시)** | ❌ **런타임 crash** | MLIR context 충돌 — *예상치 못한 발견* |
+| **StableHLO** | ❌ 미수용 | Modular 공식 입장 "no roadmap plans" |
+
+### 7.2 결정적 발견 — Mojo와 MAX의 *프로세스 공존 한계*
+
+**Mojo 코드 안에서 `Python.import_module("max.engine")` 호출 시 *런타임 crash*** (work 0034):
+
+```
+LLVM ERROR: Init::getOrCreateContext() requested an M::Context
+with different Init::Options to those used to create the existing M::Context
+```
+
+→ Mojo 컴파일러의 MLIR context와 max.engine의 MLIR context가 *동일 프로세스에서 양립 불가*. 이는 work 0035 StableHLO 차단 요인 "MLIR linking 두 라이브러리 동시 사용 불가" (Stef forum 발언)의 직접 증거.
+
+**의미**: Mojo + MAX는 *코드 한 프로세스 공존 패턴 불가*. 다음 셋 중 하나로:
+1. `max serve` 별도 daemon → Mojo가 HTTP client로 호출
+2. *Python 스크립트* (Mojo 무관)에서 max.engine 사용
+3. Mojo `.so` 모듈을 *Python에서 import*해 onnxruntime/torch와 합치기
+
+### 7.3 ONNX/StableHLO 의 위치
+
+| 도구 | StableHLO 받음? | ONNX 받음? |
+|------|:--:|:--:|
+| **MAX 26.3** | ❌ | ❌ |
+| onnxruntime | △ (외부 변환) | ✅ |
+| IREE | ✅ (1급 frontend) | ✅ |
+| OpenXLA backend | ✅ | △ |
+| PyTorch (torch.compile) | △ (Torch-MLIR) | ✅ export |
+
+→ MAX는 *production LLM serving*에서 강하지만 *cross-framework 모델 import*에선 약함. CPU 사용자에겐 *onnxruntime이 표준*.
+
+### 7.4 사용 패턴 권장
+
+```
+┌────────────────────────────────────────────────────────┐
+│                   Mojo 1.0 사용자                       │
+├────────────────────────────────────────────────────────┤
+│ 학습/실험:                                              │
+│   Mojo native (SIMD/parallelize/conv2d)                │
+│   + Python interop (NumPy/PyTorch import)              │
+│   ⚠ max.engine은 Mojo 안에서 *절대 import 안 함*       │
+│                                                         │
+│ Production:                                             │
+│   ① max serve (별도 daemon) + Mojo HTTP client         │
+│   ② Mojo .so 핫커널 + Python(onnxruntime/torch)        │
+│   ③ 모델 전체 Mojo 재작성 (max.graph 또는 Mojo native) │
+└────────────────────────────────────────────────────────┘
+```
+
+### 7.5 마이그레이션 매트릭스
+
+0.26 호환성 코드 → 1.0 변경 필요 표면:
+
+| 0.26 패턴 | 1.0 동작 |
+|----------|---------|
+| `Python.import_module("math/numpy/torch/transformers")` | ✅ 변경 없음 |
+| `Int(py=po)`, `Float64(py=po)`, `String(py=po)` | ✅ 변경 없음 |
+| `try/except e:` Python 예외 | ✅ 변경 없음 |
+| `np.array(list)` 변환 | ✅ 비용 동일 |
+| `from std.python import` (`std.` prefix) | 0.26 후반부터 권장, 1.0 강제 |
+| **`Python.import_module("max.engine")` from Mojo** | **❌ 런타임 crash** |
+| `torch.tensor([[...], [...]])` 중첩 list 직접 전달 | ❌ → `Python.list()` 명시 변환 필요 |
+
+## 8. 외부 참조
 
 - Mojo 1.0.0b1 release notes: https://mojolang.org/releases/v1.0.0b1/
 - Modular 26.3 forum announcement: https://forum.modular.com/t/modular-26-3-mojo-1-0-beta-mojolang-org-max-video-gen-and-more/3038

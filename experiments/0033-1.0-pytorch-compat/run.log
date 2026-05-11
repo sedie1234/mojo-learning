@@ -1,0 +1,23 @@
+/home/hwan/workspace/mojo/experiments/0033-1.0-pytorch-compat/01_torch.mojo:13:25: error: invalid call to '__call__': could not convert element of 'args' with type 'List[List[Float64]]' to expected type 'ConvertibleToPython & Copyable'
+    var a = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+            ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/hwan/workspace/mojo/experiments/0033-1.0-pytorch-compat/01_torch.mojo:1:1: note: function declared here
+# PyTorch 호환성 — Mojo 1.0에서 torch 직접 사용
+/home/hwan/workspace/mojo/.venv-1.0/bin/mojo: error: failed to parse the provided Mojo source module
+=== [1.0] PyTorch (CPU) interop ===
+torch version: 2.11.0+cpu
+CUDA available: False
+a = tensor([[1., 2.],
+        [3., 4.]])
+a.shape: torch.Size([2, 2])
+a.dtype: torch.float32
+a + b = tensor([[2., 3.],
+        [4., 5.]])
+a @ b = tensor([[3., 3.],
+        [7., 7.]])
+c[0][0] item: 2.0
+
+Linear(4→2) forward: 48891 ns
+y = tensor([[0.7129, 0.2993]], grad_fn=<AddmmBackward0>)
+
+transformers version: 5.2.0
