@@ -198,7 +198,7 @@ parallelize[task](n)
 
 | 변경 범주 | 자동화 가능 | 시간 |
 |----------|:--:|:--:|
-| `fn` → `def` | sed | 1분 |
+| `fn` → `def` (top-level + **struct method 모두 동일**) | sed (word-boundary 필수: `sed -E 's/(^\|[[:space:]])fn /\1def /g'`) | 1분 |
 | `from memory` → `from std.memory` | sed | 1분 |
 | `from python` → `from std.python` | sed | 1분 |
 | `alias` → `comptime` | sed | 1분 |
