@@ -124,15 +124,19 @@ mojo build hello.mojo -o hello && ./hello
 - **Modular 공식 문서**: https://docs.modular.com/mojo
 - **Mojo 언어 레퍼런스** (0.26 시점): 본 저장소의 keyword 변경 표(`log/0007`)가 실제 도구 동작 기준 검증됨
 
-## 학습 상태 (2026-04-29 종결판)
+## 학습 상태 (2026-05-11 영구 종결판)
 
-⏸️ **본 머신 (CPU only) 기준 학습 cycle 일시 종료**. GPU 확보 시 재개 예정.
+🛑 **학습자 평가: *사용할 만한 가치 없음*. Mojo cycle 영구 종결**.
 
-- **검증 완료**: Mojo 언어 자체 (work 0009-0013, NumPy MKL과 동급 SIMD/parallelize), Python interop 비용 모델 (work 0006/0008/0010), 0.26 키워드 표면 (work 0007), MAX 0.26 import 매트릭스의 한계 (work 0014/0015 — 부정 결과)
-- **미검증 (GPU 필요)**: MAX Serve LLM serving, Mojo GPU 커널, GPU matmul 비교, Qwen3-4B GPU 추론
-- **재개 trigger**: GPU 확보 / MAX 0.27+ 릴리스 / 새 op 개발 필요성 발생
-
-다시 돌아올 때 first action: `cat docs/performance-summary.md` + Plane workspace `mojo` project의 정리 노트 7페이지 훑기.
+- 자세한 평가: `docs/mojo-final-evaluation.md`
+- 핵심: 새 언어 학습 비용 > Python/PyTorch/NumPy 대비 return. *superset* 의도는 인지하나 1.0.0b1 시점 *subset*에 가까움.
+- 진행된 cycle: 0001-0035 (3 cycle, 35 work). 결론은 모든 cycle 누적된 *직접 검증* 기반.
+- **재진입 trigger** (모두 부정 시 재진입 안 함):
+  - Modular *Mojo 컴파일러 open-source* 발표
+  - Mojo가 *진정한 Python superset* 달성 (`.py` 직접 실행)
+  - MAX가 *Mojo와 한 프로세스 공존* 가능 (work 0034 crash 해소)
+  - `--target-accelerator`에 *사용자 plugin 등록* 추가
+- 영구 보존 자산: SIMD ISA / roofline / cache hierarchy 등 *Mojo 외 영구 지식*은 `~/NAS/__MyNeuron/`에 전이 완료.
 
 ## 라이선스
 

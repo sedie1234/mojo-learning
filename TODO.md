@@ -3,16 +3,27 @@
 > 이 파일은 **mojo-orchestrator** agent가 관리한다. 사용자도 자유롭게 추가/편집 가능.
 > 각 항목 끝 `(→ NNNN)` 표기는 해당 work의 로그 번호.
 
-## ⏸️ 학습 cycle 일시 종료 (2026-04-29)
+## 🛑 학습 cycle 영구 종결 (2026-05-11)
 
-**상태**: 본 머신(CPU only) 기준 학습 완료. **GPU 확보 시 재개**.
+**상태**: 학습자 최종 평가 — *Mojo는 사용할 만한 가치 없음*. 자세한 근거: `docs/mojo-final-evaluation.md`.
 
-**재개 trigger**:
-- GPU 확보 (NVIDIA 또는 AMD)
-- MAX 다음 메이저 버전 (0.27+) — Gemma4 등재 / ONNX import / bfloat16 CPU 등 추가 가능성
-- 회사·프로젝트에서 새 op 개발 필요 (PyTorch + Mojo 커널 시나리오)
+**누적 cycle**:
+- cycle-1 (2026-04~05): 0001-0015 (0.26 학습)
+- cycle-2 (2026-05-08): 0016-0025 (1.0.0b1 회귀 + GPU 코드 + CNN)
+- cycle-3 (2026-05-11): 0026-0035 (matmul/vector 보강 + 호환성 5건)
 
-**돌아올 때 first action**: `cat docs/performance-summary.md` + Plane 정리 노트 7페이지 훑기 → 어디서 멈췄는지 한눈에.
+**재진입 trigger** (모두 부정 시 재진입 *안 함*):
+- Modular *Mojo 컴파일러 open-source* 발표
+- Mojo가 *진정한 Python superset* 달성 (`.py` 직접 실행)
+- MAX가 *Mojo와 한 프로세스 공존* 가능 (work 0034 crash 해소)
+- `--target-accelerator`에 *사용자 plugin 등록* 추가
+- 본 학습자가 Modular 공식 파트너십에 진입 (회사 차원)
+
+**모니터링만 유지**:
+- Modular release notes quarterly 확인 (위 trigger 발생 여부)
+- 그 외 추가 work *없음*
+
+**돌아올 때 first action** (트리거 발생 시): `docs/mojo-final-evaluation.md` 읽고 *재평가 조건이 충족됐는지 verification*. 충족되지 않았으면 *재진입 안 함*.
 
 ## 📌 [참고] Modular 공식 AI Agent Skills (다음 cycle 시작 시 설치)
 
